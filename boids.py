@@ -18,29 +18,27 @@ boids = (boids_x, boids_y, boid_x_velocities, boid_y_velocities)
 def update_boids(boids):
         xs, ys, xvs, yvs = boids
         boid_len = len(xs)
-        # Fly towards the middle
+
         for i in range(boid_len):
                 for j in range(boid_len):
+                        # Fly towards the middle
                         xvs[i] = xvs[i] + (xs[j] - xs[i]) * flock_attraction / boid_len
-        for i in range(boid_len):
-                for j in range(boid_len):
                         yvs[i] = yvs[i] + (ys[j] - ys[i]) * flock_attraction / boid_len
-        # Fly away from nearby boids
-        for i in range(boid_len):
-                for j in range(boid_len):
+
+                        # Fly away from nearby boids
                         if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < avoid_radius:
                                 xvs[i] = xvs[i] + (xs[i] - xs[j])
                                 yvs[i] = yvs[i] + (ys[i] - ys[j])
-        # Try to match speed with nearby boids
-        for i in range(boid_len):
-                for j in range(boid_len):
+
+                        # Try to match speed with nearby boids
                         if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < flock_radius:
                                 xvs[i] = xvs[i] + (xvs[j] - xvs[i]) * velocity_matching / boid_len
                                 yvs[i] = yvs[i] + (yvs[j] - yvs[i]) * velocity_matching / boid_len
-        # Move according to velocities
-        for i in range(boid_len):
+
+                # Move according to velocities
                 xs[i] = xs[i] + xvs[i]
                 ys[i] = ys[i] + yvs[i]
+
 
 figure = plt.figure()
 axes = plt.axes(xlim=(boundry_limits[0], boundry_limits[1]),
@@ -51,6 +49,7 @@ scatter = axes.scatter(boids[0], boids[1])
 def animate(frame):
         update_boids(boids)
         scatter.set_offsets(zip(boids[0], boids[1]))
+
 
 anim = animation.FuncAnimation(figure, animate,
                                frames=50, interval=50)
