@@ -2,43 +2,49 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 import random
 
-boids_x = [random.uniform(-450, 50.0) for x in range(50)]
-boids_y = [random.uniform(300.0, 600.0) for x in range(50)]
-boid_x_velocities = [random.uniform(0, 10.0) for x in range(50)]
-boid_y_velocities = [random.uniform(-20.0, 20.0) for x in range(50)]
+boid_count = 50
+flock_attraction = 0.01
+avoid_radius = 100
+flock_radius = 10000
+velocity_matching = 0.125
+boundry_limits = [-500, 1500, -500, 1500]
+boids_x = [random.uniform(-450, 50.0) for x in range(boid_count)]
+boids_y = [random.uniform(300.0, 600.0) for x in range(boid_count)]
+boid_x_velocities = [random.uniform(0, 10.0) for x in range(boid_count)]
+boid_y_velocities = [random.uniform(-20.0, 20.0) for x in range(boid_count)]
 boids = (boids_x, boids_y, boid_x_velocities, boid_y_velocities)
 
 
 def update_boids(boids):
         xs, ys, xvs, yvs = boids
+        boid_len = len(xs)
         # Fly towards the middle
-        for i in range(len(xs)):
-                for j in range(len(xs)):
-                        xvs[i] = xvs[i] + (xs[j] - xs[i]) * 0.01 / len(xs)
-        for i in range(len(xs)):
-                for j in range(len(xs)):
-                        yvs[i] = yvs[i] + (ys[j] - ys[i]) * 0.01 / len(xs)
+        for i in range(boid_len):
+                for j in range(boid_len):
+                        xvs[i] = xvs[i] + (xs[j] - xs[i]) * flock_attraction / boid_len
+        for i in range(boid_len):
+                for j in range(boid_len):
+                        yvs[i] = yvs[i] + (ys[j] - ys[i]) * flock_attraction / boid_len
         # Fly away from nearby boids
-        for i in range(len(xs)):
-                for j in range(len(xs)):
-                        if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 100:
+        for i in range(boid_len):
+                for j in range(boid_len):
+                        if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < avoid_radius:
                                 xvs[i] = xvs[i] + (xs[i] - xs[j])
                                 yvs[i] = yvs[i] + (ys[i] - ys[j])
         # Try to match speed with nearby boids
-        for i in range(len(xs)):
-                for j in range(len(xs)):
-                        if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 10000:
-                                xvs[i] = xvs[i] + (xvs[j] -
-                                                   xvs[i]) * 0.125 / len(xs)
-                                yvs[i] = yvs[i] + (yvs[j] -
-                                                   yvs[i]) * 0.125 / len(xs)
+        for i in range(boid_len):
+                for j in range(boid_len):
+                        if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < flock_radius:
+                                xvs[i] = xvs[i] + (xvs[j] - xvs[i]) * velocity_matching / boid_len
+                                yvs[i] = yvs[i] + (yvs[j] - yvs[i]) * velocity_matching / boid_len
         # Move according to velocities
-        for i in range(len(xs)):
+        for i in range(boid_len):
                 xs[i] = xs[i] + xvs[i]
                 ys[i] = ys[i] + yvs[i]
 
 figure = plt.figure()
-axes = plt.axes(xlim=(-500, 1500), ylim=(-500, 1500))
+axes = plt.axes(xlim=(boundry_limits[0], boundry_limits[1]),
+                ylim=(boundry_limits[2], boundry_limits[3]))
 scatter = axes.scatter(boids[0], boids[1])
 
 
