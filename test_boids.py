@@ -14,7 +14,7 @@ def test_bad_boids_regression():
 
 
 def test_generate_boids():
-    xs, ys, xvs, yvs = generate_boids()
+    xs, ys, xvs, yvs = generate_boids(50)
     assert_equal(len(xs), 50)
     for x_value in xs:
         assert_less(x_value, 50)
