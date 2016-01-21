@@ -21,8 +21,8 @@ def update_boids(boids):
                         x_difference = (xs[j] - xs[i])
                         y_difference = (ys[j] - ys[i])
                         # Fly towards the middle
-                        xvs[i] += x_difference * flock_attraction / boid_len
-                        yvs[i] += y_difference * flock_attraction / boid_len
+                        xvs[i] += x_difference * flock_attraction
+                        yvs[i] += y_difference * flock_attraction
 
                         # Fly away from nearby boids
                         if x_difference**2 + y_difference**2 < avoid_radius:
@@ -31,8 +31,8 @@ def update_boids(boids):
 
                         # Try to match speed with nearby boids
                         if x_difference**2 + y_difference**2 < flock_radius:
-                                xvs[i] += (xvs[j] - xvs[i]) * velocity_matching / boid_len
-                                yvs[i] += (yvs[j] - yvs[i]) * velocity_matching / boid_len
+                                xvs[i] += (xvs[j] - xvs[i]) * velocity_matching
+                                yvs[i] += (yvs[j] - yvs[i]) * velocity_matching
 
                 # Move according to velocities
                 xs[i] += xvs[i]
@@ -40,10 +40,10 @@ def update_boids(boids):
 
 
 boid_count = 50
-flock_attraction = 0.01
+flock_attraction = 0.01 / boid_count
 avoid_radius = 100
 flock_radius = 10000
-velocity_matching = 0.125
+velocity_matching = 0.125 / boid_count
 boundry_limits = [-500, 1500, -500, 1500]
 boids = generate_boids(boid_count)
 figure = plt.figure()
