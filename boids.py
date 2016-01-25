@@ -21,20 +21,21 @@ def update_boids(boids):
                 y_delta = 0
 
                 for j in range(boid_len):
-                        x_difference = (xs[j] - xs[i])
-                        y_difference = (ys[j] - ys[i])
+                        x_difference = xs[j] - xs[i]
+                        y_difference = ys[j] - ys[i]
+                        sum_of_squares = x_difference**2 + y_difference**2
 
                         # Fly towards the middle
                         x_delta += x_difference * flock_attraction
                         y_delta += y_difference * flock_attraction
 
                         # Fly away from nearby boids
-                        if x_difference**2 + y_difference**2 < avoid_radius:
+                        if sum_of_squares < avoid_radius:
                                 x_delta -= x_difference
                                 y_delta -= y_difference
 
                         # Try to match speed with nearby boids
-                        if x_difference**2 + y_difference**2 < flock_radius:
+                        if sum_of_squares < flock_radius:
                                 x_delta += (xvs[j] - xvs[i]) * velocity_matching
                                 y_delta += (yvs[j] - yvs[i]) * velocity_matching
 
