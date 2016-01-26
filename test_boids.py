@@ -1,4 +1,4 @@
-from boids import update_boids, generate_boids
+from boids import update_boids, generate_boids, shift_boid
 from nose.tools import assert_almost_equal, assert_equal, assert_less, assert_greater
 import os
 import yaml
@@ -28,3 +28,8 @@ def test_generate_boids():
     for yv_value in yvs:
         assert_less(yv_value, 20)
         assert_greater(yv_value, -20)
+
+
+def test_shift_boid():
+    assert_equal(shift_boid(0, 0, 1, 0, 0, 5, 0, 0), [-0.0025, -4.999])
+
