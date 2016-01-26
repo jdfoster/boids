@@ -30,6 +30,16 @@ def test_generate_boids():
         assert_greater(yv_value, -20)
 
 
-def test_shift_boid():
-    assert_equal(shift_boid(0, 0, 1, 0, 0, 5, 0, 0), [-0.0025, -4.999])
+def test_shift_boid_flock_centering():
+    # Uses default global values for flock centring
+    assert_equal(shift_boid(0, 0, 0, 0, 8, 8, 50, 50), [0.1266, 0.1266])
 
+
+def test_shift_boid_collision_avoidance():
+    # Uses default global values for collision avoidance
+    assert_equal(shift_boid(0, 0, 0, 0, 4, 4, 50, 50), [-3.8742, -3.8742])
+
+
+def test_shift_boid_velocity_matching():
+    # Uses default global values for velocity matching
+    assert_equal(shift_boid(0, 0, 0, 0, 80, 80, 50, 50), [0.016, 0.016])
