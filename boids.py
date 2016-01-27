@@ -3,6 +3,14 @@ from matplotlib import animation
 import random
 
 
+class Boid(object):
+        def __init__(self, x, y, xv, yv):
+                self.x = x
+                self.y = y
+                self.xv = xv
+                self.yv = yv
+
+
 class Boids(object):
         def __init__(self, boid_count, flock_attraction, avoid_radius,
                      flock_radius, velocity_matching):
@@ -13,17 +21,15 @@ class Boids(object):
                 self.velocity_matching = velocity_matching / self.count
 
         def generate_boids(self):
-                self.xs = [random.uniform(-450, 50.0) for x in
-                           range(self.count)]
-                self.ys = [random.uniform(300.0, 600.0) for x in
-                           range(self.count)]
-                self.xvs = [random.uniform(0, 10.0) for x in
-                            range(self.count)]
-                self.yvs = [random.uniform(-20.0, 20.0) for x in
-                            range(self.count)]
+                self.flock = [Boid(random.uniform(-450, 50.0),
+                                   random.uniform(300.0, 600.0),
+                                   random.uniform(0, 10.0),
+                                   random.uniform(-20.0, 20.0))
+                              for x in range(self.count)]
 
         def generate_from_file(self, file_data):
-                self.xs, self.ys, self.xvs, self.yvs = file_data
+                self.flock = [Boid(x, y, xv, yv) for x, y, xv, yv in
+                              zip(*file_data)]
 
         def shift_boid(self, own_x, own_y, own_xv, own_yv,
                        other_x, other_y, other_xv, other_yv):
@@ -50,27 +56,26 @@ class Boids(object):
                 return [x_delta, y_delta]
 
         def update_boids(self):
-                for i in range(self.count):
+                for protagonist in self.flock:
                         x_delta = 0
                         y_delta = 0
 
-                        for j in range(self.count):
+                        for antagonist in self.flock:
                                 shift_values = self.shift_boid(
-                                        self.xs[i], self.ys[i],
-                                        self.xvs[i], self.yvs[i],
-                                        self.xs[j], self.ys[j],
-                                        self.xvs[j], self.yvs[j])
+                                        protagonist.x, protagonist.y,
+                                        protagonist.xv, protagonist.yv,
+                                        antagonist.x, antagonist.y,
+                                        antagonist.xv, antagonist.yv)
                                 x_delta += shift_values[0]
-
                                 y_delta += shift_values[1]
 
                         # Adjust velocities from interaction
-                        self.xvs[i] += x_delta
-                        self.yvs[i] += y_delta
+                        protagonist.xv += x_delta
+                        protagonist.yv += y_delta
 
                         # Move according to velocities
-                        self.xs[i] += self.xvs[i]
-                        self.ys[i] += self.yvs[i]
+                        protagonist.x += protagonist.xv
+                        protagonist.y += protagonist.yv
 
 
 boid_count = 50
@@ -85,12 +90,13 @@ boids.generate_boids()
 figure = plt.figure()
 axes = plt.axes(xlim=(boundry_limits[0], boundry_limits[1]),
                 ylim=(boundry_limits[2], boundry_limits[3]))
-scatter = axes.scatter(boids.xs, boids.ys)
+scatter = axes.scatter([bd.x for bd in boids.flock],
+                       [bd.y for bd in boids.flock])
 
 
 def animate(frame):
         boids.update_boids()
-        scatter.set_offsets(zip(boids.xs, boids.ys))
+        scatter.set_offsets(zip([(bd.x, bd.y) for bd in boids.flock]))
 
 
 anim = animation.FuncAnimation(figure, animate,
