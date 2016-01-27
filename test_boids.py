@@ -39,16 +39,22 @@ def test_generate_boids():
 def test_shift_boid_flock_centering():
     # Uses default global values for flock centring
     boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
-    assert_equal(boids.shift_boid(0, 0, 0, 0, 8, 8, 50, 50), [0.1266, 0.1266])
+    protagonist = bdz.Boid(0, 0, 0, 0, boids)
+    antagonist = bdz.Boid(8, 8, 50, 50, boids)
+    assert_equal(protagonist.shift_boid(antagonist), [0.1266, 0.1266])
 
 
 def test_shift_boid_collision_avoidance():
     # Uses default global values for collision avoidance
     boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
-    assert_equal(boids.shift_boid(0, 0, 0, 0, 4, 4, 50, 50), [-3.8742, -3.8742])
+    protagonist = bdz.Boid(0, 0, 0, 0, boids)
+    antagonist = bdz.Boid(4, 4, 50, 50, boids)
+    assert_equal(protagonist.shift_boid(antagonist), [-3.8742, -3.8742])
 
 
 def test_shift_boid_velocity_matching():
     # Uses default global values for velocity matching
     boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
-    assert_equal(boids.shift_boid(0, 0, 0, 0, 80, 80, 50, 50), [0.016, 0.016])
+    protagonist = bdz.Boid(0, 0, 0, 0, boids)
+    antagonist = bdz.Boid(80, 80, 50, 50, boids)
+    assert_equal(protagonist.shift_boid(antagonist), [0.016, 0.016])
