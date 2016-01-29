@@ -1,39 +1,31 @@
-import random
+import numpy as np
 
 
 class Boid(object):
         def __init__(self, x, y, xv, yv, host):
-                self.x = x
-                self.y = y
-                self.xv = xv
-                self.yv = yv
+                self.location = np.array([x, y])
+                self.velocity = np.array([xv, yv])
                 self.host = host
 
         def shift_boid(self, other):
-                x_delta = 0
-                y_delta = 0
-
-                x_difference = other.x - self.x
-                y_difference = other.y - self.y
-                sum_of_squares = x_difference**2 + y_difference**2
+                location_delta = np.array([0., 0.])
+                location_separation = other.location - self.location
+                sum_of_squares = np.sum(location_separation**2)
 
                 # Fly towards the middle
-                x_delta += x_difference * self.host.flock_attraction
-                y_delta += y_difference * self.host.flock_attraction
+                location_delta += (location_separation *
+                                   self.host.flock_attraction)
 
                 # Fly away from nearby boids
                 if sum_of_squares < self.host.avoid_radius:
-                        x_delta -= x_difference
-                        y_delta -= y_difference
+                        location_delta -= location_separation
 
                 # Try to match speed with nearby boids
                 if sum_of_squares < self.host.flock_radius:
-                        x_delta += ((other.xv - self.xv) *
-                                    self.host.velocity_matching)
-                        y_delta += ((other.yv - self.yv) *
-                                    self.host.velocity_matching)
+                        location_delta += ((other.velocity - self.velocity) *
+                                           self.host.velocity_matching)
 
-                return [x_delta, y_delta]
+                return location_delta
 
 
 class Boids(object):
@@ -46,32 +38,28 @@ class Boids(object):
                 self.velocity_matching = velocity_matching / self.count
 
         def generate_boids(self):
-                self.flock = [Boid(random.uniform(-450, 50.0),
-                                   random.uniform(300.0, 600.0),
-                                   random.uniform(0, 10.0),
-                                   random.uniform(-20.0, 20.0),
+                self.flock = [Boid(np.random.uniform(-450.0, 50.0),
+                                   np.random.uniform(300.0, 600.0),
+                                   np.random.uniform(0.0, 10.0),
+                                   np.random.uniform(-20.0, 20.0),
                                    self)
                               for x in range(self.count)]
 
         def generate_from_file(self, file_data):
-                self.flock = [Boid(x, y, xv, yv, self) for x, y, xv, yv in
-                              zip(*file_data)]
+                self.flock = [Boid(x, y, xv, yv, self)
+                              for x, y, xv, yv in zip(*file_data)]
 
         def update_boids(self):
                 for protagonist in self.flock:
-                        x_delta = 0
-                        y_delta = 0
+                        location_delta = np.array([0., 0.])
 
                         for antagonist in self.flock:
                                 shift_values = protagonist.shift_boid(
                                         antagonist)
-                                x_delta += shift_values[0]
-                                y_delta += shift_values[1]
+                                location_delta += shift_values
 
                         # Adjust velocities from interaction
-                        protagonist.xv += x_delta
-                        protagonist.yv += y_delta
+                        protagonist.velocity += location_delta
 
                         # Move according to velocities
-                        protagonist.x += protagonist.xv
-                        protagonist.y += protagonist.yv
+                        protagonist.location += protagonist.velocity

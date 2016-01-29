@@ -15,13 +15,13 @@ boids.generate_boids()
 figure = plt.figure()
 axes = plt.axes(xlim=(boundry_limits[0], boundry_limits[1]),
                 ylim=(boundry_limits[2], boundry_limits[3]))
-scatter = axes.scatter([bd.x for bd in boids.flock],
-                       [bd.y for bd in boids.flock])
+scatter = axes.scatter([bd.location[0] for bd in boids.flock],
+                       [bd.location[1] for bd in boids.flock])
 
 
 def animate(frame):
         boids.update_boids()
-        scatter.set_offsets(zip([(bd.x, bd.y) for bd in boids.flock]))
+        scatter.set_offsets([bd.location for bd in boids.flock])
 
 
 anim = animation.FuncAnimation(figure, animate,
