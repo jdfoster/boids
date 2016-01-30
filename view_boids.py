@@ -1,20 +1,21 @@
 from matplotlib import pyplot as plt
 from matplotlib import animation
 from boids import Boid, Boids
+import os
+import yaml
 
 
-boid_count = 50
-flock_attraction = 0.01
-avoid_radius = 100
-flock_radius = 10000
-velocity_matching = 0.125
-boundry_limits = [-500, 1500, -500, 1500]
-boids = Boids(boid_count, flock_attraction, avoid_radius, flock_radius,
-              velocity_matching)
+with open(os.path.join(os.path.dirname(__file__), 'boid_config.yml')) \
+     as config_file:
+    config = yaml.load(config_file)
+    boundary_limits = config.pop('boundary_limits')
+    boids = Boids(**config)
+
+
 boids.generate_boids()
 figure = plt.figure()
-axes = plt.axes(xlim=(boundry_limits[0], boundry_limits[1]),
-                ylim=(boundry_limits[2], boundry_limits[3]))
+axes = plt.axes(xlim=(boundary_limits[0], boundary_limits[1]),
+                ylim=(boundary_limits[2], boundary_limits[3]))
 scatter = axes.scatter([bd.location[0] for bd in boids.flock],
                        [bd.location[1] for bd in boids.flock])
 

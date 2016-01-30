@@ -1,0 +1,6 @@
+boid_count: 50
+flock_attraction: 0.01
+avoid_radius: 100
+flock_radius: 10000
+velocity_matching: 0.125
+boundary_limits: [-500, 1500, -500, 1500]
