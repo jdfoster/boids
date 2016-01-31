@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 from matplotlib import animation
-from boids import Boid, Boids
+from boids import Boid, Boids, BoidsBuilder
 import os
 import yaml
 
@@ -9,10 +9,12 @@ with open(os.path.join(os.path.dirname(__file__), 'boid_config.yml')) \
      as config_file:
     config = yaml.load(config_file)
     boundary_limits = config.pop('boundary_limits')
-    boids = Boids(**config)
+    builder = BoidsBuilder()
+    builder.set_flock_parameters(**config)
+    builder.generate_boids()
+    boids = builder.finish()
 
 
-boids.generate_boids()
 figure = plt.figure()
 axes = plt.axes(xlim=(boundary_limits[0], boundary_limits[1]),
                 ylim=(boundary_limits[2], boundary_limits[3]))

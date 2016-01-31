@@ -6,10 +6,13 @@ import yaml
 
 
 def test_bad_boids_regression():
-    boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
+    builder = bdz.BoidsBuilder()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.generate_boids
     regression_data = yaml.load(open(os.path.join(
         os.path.dirname(__file__), 'fixture.yml')))
-    boids.generate_from_file(regression_data["before"])
+    builder.generate_from_file(regression_data["before"])
+    boids = builder.finish()
     boids.update_boids()
     actual_values = ([bd.location[0] for bd in boids.flock],
                      [bd.location[1] for bd in boids.flock],
@@ -21,8 +24,12 @@ def test_bad_boids_regression():
 
 
 def test_generate_boids():
-    boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
-    boids.generate_boids()
+    builder = bdz.BoidsBuilder()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.set_inital_location_ranges([-450.0, 50.0], [300.0, 600.0])
+    builder.set_inital_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
+    builder.generate_boids()
+    boids = builder.finish()
     assert_equal(len(boids.flock), 50)
     for bd in boids.flock:
         assert_array_less(bd.location, [50, 600])
@@ -33,7 +40,10 @@ def test_generate_boids():
 
 def test_shift_boid_flock_centering():
     # Uses default global values for flock centring
-    boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
+    builder = bdz.BoidsBuilder()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.generate_boids()
+    boids = builder.finish()
     protagonist = bdz.Boid(0, 0, 0, 0, boids)
     antagonist = bdz.Boid(8, 8, 50, 50, boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
@@ -42,7 +52,10 @@ def test_shift_boid_flock_centering():
 
 def test_shift_boid_collision_avoidance():
     # Uses default global values for collision avoidance
-    boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
+    builder = bdz.BoidsBuilder()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.generate_boids()
+    boids = builder.finish()
     protagonist = bdz.Boid(0, 0, 0, 0, boids)
     antagonist = bdz.Boid(4, 4, 50, 50, boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
@@ -51,7 +64,10 @@ def test_shift_boid_collision_avoidance():
 
 def test_shift_boid_velocity_matching():
     # Uses default global values for velocity matching
-    boids = bdz.Boids(50, 0.01, 100, 10000, 0.125)
+    builder = bdz.BoidsBuilder()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.generate_boids()
+    boids = builder.finish()
     protagonist = bdz.Boid(0, 0, 0, 0, boids)
     antagonist = bdz.Boid(80, 80, 50, 50, boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
