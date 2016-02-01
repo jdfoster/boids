@@ -44,6 +44,10 @@ class Boids(object):
                         # Move according to velocities
                         protagonist.location += protagonist.velocity
 
+        @property
+        def current_locations(self):
+                return np.vstack([boid.location for boid in self.flock])
+
 
 class BoidsBuilder(object):
         def __init__(self):

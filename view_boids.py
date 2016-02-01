@@ -14,13 +14,11 @@ class ViewBoids(object):
                               self.boundary_limits[1]),
                         ylim=(self.boundary_limits[2],
                               self.boundary_limits[3]))
-        self.scatter = axes.scatter([bd.location[0] for bd
-                                     in self.boids.flock],
-                                    [bd.location[1] for bd
-                                     in self.boids.flock])
+        self.scatter = axes.scatter(self.boids.current_locations[:,0],
+                                    self.boids.current_locations[:,1])
 
     def update_plt(self):
-        self.scatter.set_offsets([bd.location for bd in self.boids.flock])
+        self.scatter.set_offsets(self.boids.current_locations)
 
 
 class ControllerBoids(object):
@@ -47,8 +45,8 @@ class ControllerBoids(object):
         return anim
 
     
-contrl = ControllerBoids()
-anim = contrl.run_animation()
+controller = ControllerBoids()
+boid_animation = controller.run_animation()
 
 
 if __name__ == "__main__":
