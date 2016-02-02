@@ -6,14 +6,11 @@ import yaml
 
 
 class ViewBoids(object):
-    def __init__(self, boids_model, boundary_limits):
+    def __init__(self, boids_model):
         self.boids = boids_model
-        self.boundary_limits = boundary_limits
         self.figure = plt.figure()
-        axes = plt.axes(xlim=(self.boundary_limits[0],
-                              self.boundary_limits[1]),
-                        ylim=(self.boundary_limits[2],
-                              self.boundary_limits[3]))
+        axes = plt.axes(xlim=(self.boids.boundary_x_limits),
+                        ylim=(self.boids.boundary_y_limits))
         self.scatter = axes.scatter(self.boids.current_locations[:,0],
                                     self.boids.current_locations[:,1])
 
@@ -26,12 +23,12 @@ class ControllerBoids(object):
         with open(os.path.join(os.path.dirname(__file__),
                                'boid_config.yml')) as config_file:
             config = yaml.load(config_file)
-            boundary_limits = config.pop('boundary_limits')
             builder = BoidsBuilder()
+            builder.set_boundary_limits(config.pop('boundary_limits'))
             builder.set_flock_parameters(**config)
             builder.generate_boids()
             self.boids = builder.finish()
-            self.view = ViewBoids(self.boids, boundary_limits)
+            self.view = ViewBoids(self.boids)
         
         def animate_boid(frame_number):
             self.boids.update_boids()

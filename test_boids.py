@@ -26,8 +26,8 @@ def test_bad_boids_regression():
 def test_generate_boids():
     builder = bdz.BoidsBuilder()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
-    builder.set_inital_location_ranges([-450.0, 50.0], [300.0, 600.0])
-    builder.set_inital_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
+    builder.set_initial_location_ranges([-450.0, 50.0], [300.0, 600.0])
+    builder.set_initial_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
     builder.generate_boids()
     boids = builder.finish()
     assert_equal(len(boids.flock), 50)
