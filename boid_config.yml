@@ -1,6 +1,15 @@
-boid_count: 50
-flock_attraction: 0.01
-avoid_radius: 100
-flock_radius: 10000
-velocity_matching: 0.125
-boundary_limits: [-500, 1500, -500, 1500]
+flock_parameters:
+  boid_count: 50
+  flock_attraction: 0.01
+  avoid_radius: 100
+  flock_radius: 10000
+  velocity_matching: 0.125
+boundary_limits:
+  x_limits: [-500, 1500]
+  y_limits: [-500, 1500]
+location_range:
+  x_limits: [-450.0, 50.0]
+  y_limits: [300.0, 600.0]
+velocity_range:
+  x_limits: [0.0, 10.0]
+  y_limits: [-20.0, 20.0]

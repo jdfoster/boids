@@ -1,8 +1,6 @@
 from matplotlib import pyplot as plt
 from matplotlib import animation
 from boids import Boid, Boids, BoidsBuilder
-import os
-import yaml
 
 
 class ViewBoids(object):
@@ -20,15 +18,11 @@ class ViewBoids(object):
 
 class ControllerBoids(object):
     def __init__(self):
-        with open(os.path.join(os.path.dirname(__file__),
-                               'boid_config.yml')) as config_file:
-            config = yaml.load(config_file)
-            builder = BoidsBuilder()
-            builder.set_boundary_limits(config.pop('boundary_limits'))
-            builder.set_flock_parameters(**config)
-            builder.generate_boids()
-            self.boids = builder.finish()
-            self.view = ViewBoids(self.boids)
+        builder = BoidsBuilder()
+        builder.set_defaults()
+        builder.generate_boids()
+        self.boids = builder.finish()
+        self.view = ViewBoids(self.boids)
         
         def animate_boid(frame_number):
             self.boids.update_boids()

@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import yaml
 
 
 class Boid(object):
@@ -55,31 +57,42 @@ class BoidsBuilder(object):
 
         def start_boids(self):
                 self.model = Boids()
-                # Default values -- start
-                self.x_location_limits = [-450.0, 50.0]  
-                self.y_location_limits = [300.0, 600.0]
-                self.x_velocity_limits = [0.0, 10.0]
-                self.y_velocity_limits = [-20.0, 20.0]
-                self.model.boundary_x_limits = [-500, 1500]
-                self.model.boundary_y_limits = [-500, 1500]
-                # Default values -- end
+                self.x_location_limits = None
+                self.y_location_limits = None
+                self.x_velocity_limits = None
+                self.y_velocity_limits = None
+                self.model.boundary_x_limits = None
+                self.model.boundary_y_limits = None
                 self.model.avoid_radius = None
                 self.model.boid_count = None
                 self.model.flock_attraction = None
                 self.model.flock_radius = None
                 self.model.velocity_matching = None
 
-        def set_initial_location_ranges(self, x_limits, y_limits):
+        def set_defaults(self):
+                with open(os.path.join(os.path.dirname(__file__),
+                               'boid_config.yml')) as config_file:
+                        config = yaml.load(config_file)
+                        self.set_boundary_limits(**config.pop(
+                                'boundary_limits'))
+                        self.set_location_ranges(**config.pop(
+                                'location_range'))
+                        self.set_velocity_ranges(**config.pop(
+                                'velocity_range'))
+                        self.set_flock_parameters(**config.pop(
+                                'flock_parameters'))
+
+        def set_location_ranges(self, x_limits, y_limits):
                 self.x_location_limits = x_limits
                 self.y_location_limits = y_limits
 
-        def set_initial_velocity_ranges(self, xv_limits, yv_limits):
-                self.x_velocity_limits = xv_limits
-                self.y_velocity_limits = yv_limits
+        def set_velocity_ranges(self, x_limits, y_limits):
+                self.x_velocity_limits = x_limits
+                self.y_velocity_limits = y_limits
 
-        def set_boundary_limits(self, boundary_limits):
-                self.model.boundary_x_limits = boundary_limits[:2]
-                self.model.boundary_y_limits = boundary_limits[2:]
+        def set_boundary_limits(self, x_limits, y_limits):
+                self.model.boundary_x_limits = x_limits
+                self.model.boundary_y_limits = y_limits
 
         def set_flock_parameters(self, boid_count, flock_attraction,
                                  avoid_radius, flock_radius,
@@ -105,8 +118,8 @@ class BoidsBuilder(object):
 
         def validate(self):
                 assert(len(self.model.flock) == self.model.boid_count)
-                assert(len(self.model.boundary_x_limits) == 2)
-                assert(len(self.model.boundary_y_limits) == 2)
+                assert(self.model.boundary_x_limits is not None)
+                assert(self.model.boundary_y_limits is not None)
                 assert(self.model.avoid_radius is not None)
                 assert(self.model.flock_attraction is not None)
                 assert(self.model.flock_radius is not None)

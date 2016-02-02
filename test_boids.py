@@ -7,6 +7,7 @@ import yaml
 
 def test_bad_boids_regression():
     builder = bdz.BoidsBuilder()
+    builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids
     regression_data = yaml.load(open(os.path.join(
@@ -25,9 +26,9 @@ def test_bad_boids_regression():
 
 def test_generate_boids():
     builder = bdz.BoidsBuilder()
-    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
-    builder.set_initial_location_ranges([-450.0, 50.0], [300.0, 600.0])
-    builder.set_initial_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
+    builder.set_defaults()
+    builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
+    builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
     builder.generate_boids()
     boids = builder.finish()
     assert_equal(len(boids.flock), 50)
@@ -41,6 +42,7 @@ def test_generate_boids():
 def test_shift_boid_flock_centering():
     # Uses default global values for flock centring
     builder = bdz.BoidsBuilder()
+    builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids()
     boids = builder.finish()
@@ -53,6 +55,7 @@ def test_shift_boid_flock_centering():
 def test_shift_boid_collision_avoidance():
     # Uses default global values for collision avoidance
     builder = bdz.BoidsBuilder()
+    builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids()
     boids = builder.finish()
@@ -65,6 +68,7 @@ def test_shift_boid_collision_avoidance():
 def test_shift_boid_velocity_matching():
     # Uses default global values for velocity matching
     builder = bdz.BoidsBuilder()
+    builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids()
     boids = builder.finish()
