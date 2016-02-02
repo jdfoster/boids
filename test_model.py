@@ -1,4 +1,5 @@
-import boids as bdz
+from builder import BuildBoids
+from model import Boid
 from nose.tools import assert_almost_equal, assert_equal
 from numpy.testing import assert_array_equal, assert_array_less
 import os
@@ -6,7 +7,7 @@ import yaml
 
 
 def test_bad_boids_regression():
-    builder = bdz.BoidsBuilder()
+    builder = BuildBoids()
     builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids
@@ -25,7 +26,7 @@ def test_bad_boids_regression():
 
 
 def test_generate_boids():
-    builder = bdz.BoidsBuilder()
+    builder = BuildBoids()
     builder.set_defaults()
     builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
@@ -41,38 +42,38 @@ def test_generate_boids():
 
 def test_shift_boid_flock_centering():
     # Uses default global values for flock centring
-    builder = bdz.BoidsBuilder()
+    builder = BuildBoids()
     builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids()
     boids = builder.finish()
-    protagonist = bdz.Boid(0, 0, 0, 0, boids)
-    antagonist = bdz.Boid(8, 8, 50, 50, boids)
+    protagonist = Boid(0, 0, 0, 0, boids)
+    antagonist = Boid(8, 8, 50, 50, boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [0.1266, 0.1266])
 
 
 def test_shift_boid_collision_avoidance():
     # Uses default global values for collision avoidance
-    builder = bdz.BoidsBuilder()
+    builder = BuildBoids()
     builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids()
     boids = builder.finish()
-    protagonist = bdz.Boid(0, 0, 0, 0, boids)
-    antagonist = bdz.Boid(4, 4, 50, 50, boids)
+    protagonist = Boid(0, 0, 0, 0, boids)
+    antagonist = Boid(4, 4, 50, 50, boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [-3.8742, -3.8742])
 
 
 def test_shift_boid_velocity_matching():
     # Uses default global values for velocity matching
-    builder = bdz.BoidsBuilder()
+    builder = BuildBoids()
     builder.set_defaults()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids()
     boids = builder.finish()
-    protagonist = bdz.Boid(0, 0, 0, 0, boids)
-    antagonist = bdz.Boid(80, 80, 50, 50, boids)
+    protagonist = Boid(0, 0, 0, 0, boids)
+    antagonist = Boid(80, 80, 50, 50, boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [0.016, 0.016])
