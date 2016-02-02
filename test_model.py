@@ -25,21 +25,6 @@ def test_bad_boids_regression():
             assert_almost_equal(after_value, before_value, delta=0.01)
 
 
-def test_generate_boids():
-    builder = BuildBoids()
-    builder.set_defaults()
-    builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
-    builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
-    builder.generate_boids()
-    boids = builder.finish()
-    assert_equal(len(boids.flock), 50)
-    for bd in boids.flock:
-        assert_array_less(bd.location, [50, 600])
-        assert_array_less([-450, 300], bd.location)
-        assert_array_less(bd.velocity, [10, 20])
-        assert_array_less([0, -20], bd.velocity)
-
-
 def test_shift_boid_flock_centering():
     # Uses default global values for flock centring
     builder = BuildBoids()

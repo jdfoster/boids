@@ -10,10 +10,10 @@ class BuildBoids(object):
 
         def start_boids(self):
                 self.model = Boids()
-                self.x_location_limits = None
-                self.y_location_limits = None
-                self.x_velocity_limits = None
-                self.y_velocity_limits = None
+                self.location_x_limits = None
+                self.location_y_limits = None
+                self.velocity_x_limits = None
+                self.velocity_y_limits = None
                 self.model.boundary_x_limits = None
                 self.model.boundary_y_limits = None
                 self.model.avoid_radius = None
@@ -21,6 +21,7 @@ class BuildBoids(object):
                 self.model.flock_attraction = None
                 self.model.flock_radius = None
                 self.model.velocity_matching = None
+                self.model.flock = None
 
         def set_defaults(self):
                 with open(os.path.join(os.path.dirname(__file__),
@@ -36,12 +37,12 @@ class BuildBoids(object):
                                 'flock_parameters'))
 
         def set_location_ranges(self, x_limits, y_limits):
-                self.x_location_limits = x_limits
-                self.y_location_limits = y_limits
+                self.location_x_limits = x_limits
+                self.location_y_limits = y_limits
 
         def set_velocity_ranges(self, x_limits, y_limits):
-                self.x_velocity_limits = x_limits
-                self.y_velocity_limits = y_limits
+                self.velocity_x_limits = x_limits
+                self.velocity_y_limits = y_limits
 
         def set_boundary_limits(self, x_limits, y_limits):
                 self.model.boundary_x_limits = x_limits
@@ -58,10 +59,10 @@ class BuildBoids(object):
 
         def generate_boids(self):
                 self.model.flock = [
-                        Boid(np.random.uniform(*self.x_location_limits),
-                             np.random.uniform(*self.y_location_limits),
-                             np.random.uniform(*self.x_velocity_limits),
-                             np.random.uniform(*self.y_velocity_limits),
+                        Boid(np.random.uniform(*self.location_x_limits),
+                             np.random.uniform(*self.location_y_limits),
+                             np.random.uniform(*self.velocity_x_limits),
+                             np.random.uniform(*self.velocity_y_limits),
                              self.model)
                         for x in range(self.model.boid_count)]
 
