@@ -1,5 +1,5 @@
-from builder import BuildBoids
-from model import Boids
+from ..builder import BuildBoids
+from ..model import Boids
 from nose.tools import assert_equal, raises
 from numpy.testing import assert_array_equal, assert_array_less, assert_raises
 from mock import patch, MagicMock

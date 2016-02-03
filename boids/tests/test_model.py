@@ -1,5 +1,5 @@
-from builder import BuildBoids
-from model import Boid
+from ..builder import BuildBoids
+from ..model import Boid
 from nose.tools import assert_almost_equal, assert_equal
 from numpy.testing import assert_array_equal, assert_array_less
 import os
@@ -12,7 +12,7 @@ def test_bad_boids_regression():
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.generate_boids
     regression_data = yaml.load(open(os.path.join(
-        os.path.dirname(__file__), 'fixture.yml')))
+        os.path.dirname(__file__), 'fixtures', 'fixture.yml')))
     builder.generate_from_file(regression_data["before"])
     boids = builder.finish()
     boids.update_boids()
