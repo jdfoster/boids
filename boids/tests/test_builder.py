@@ -8,7 +8,8 @@ import yaml
 
 def test_generate_boids():
     builder = BuildBoids()
-    builder.set_defaults()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
     builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     builder.generate_boids()
     boids = builder.finish()
@@ -36,35 +37,12 @@ def test_validate():
         builder.validate()
 
     validate()  # Fails
-    builder.set_defaults()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
+    builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     validate()  # Fails
-    builder.boid_count = 0
-    builder.model.flock = range(4)
-    validate()  # Fails
-    builder.model.boid_count = 4
+    builder.generate_boids()
     builder.validate()  # Passes
-
-
-def test_set_defaults():
-    first_nested_data = {'x_limits': [2, 4], 'y_limits': [6, 8]}
-    second_nested_data = {'boid_count': 2, 'flock_attraction': 4,
-                          'avoid_radius': 6, 'flock_radius': 8,
-                          'velocity_matching': 10}
-    test_data = {'boundary_limits': first_nested_data,
-                 'location_range': first_nested_data,
-                 'velocity_range': first_nested_data,
-                 'flock_parameters': second_nested_data}
-    with patch.object(yaml, 'load') as mock_load:
-        mock_load.return_value = test_data
-        builder = BuildBoids()
-        builder.set_defaults()
-        assert(builder.location_x_limits[0] == 2)
-        assert(builder.location_y_limits[0] == 6)
-        assert(builder.model.boid_count == 2)
-        assert(builder.model.flock_attraction == 2)
-        assert(builder.model.avoid_radius == 6)
-        assert(builder.model.flock_radius == 8)
-        assert(builder.model.velocity_matching == 5)
 
 
 def test_set_location():
@@ -100,9 +78,12 @@ def test_set_flock_parameters():
     assert(builder.model.flock_radius == 8)
     assert(builder.model.velocity_matching == 5)
 
+
 def test_finish():
     builder = BuildBoids()
-    builder.set_defaults()
+    builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
+    builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
+    builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     builder.generate_boids()
     returned_value = builder.finish()
     assert(isinstance(returned_value, Boids))

@@ -1,7 +1,5 @@
 from model import Boid, Boids
 import numpy as np
-import os
-import yaml
 
 
 class BuildBoids(object):
@@ -22,19 +20,6 @@ class BuildBoids(object):
                 self.model.flock_radius = None
                 self.model.velocity_matching = None
                 self.model.flock = None
-
-        def set_defaults(self):
-                with open(os.path.join(os.path.dirname(__file__),
-                               'boid_config.yml')) as config_file:
-                        config = yaml.load(config_file)
-                        self.set_boundary_limits(**config.pop(
-                                'boundary_limits'))
-                        self.set_location_ranges(**config.pop(
-                                'location_range'))
-                        self.set_velocity_ranges(**config.pop(
-                                'velocity_range'))
-                        self.set_flock_parameters(**config.pop(
-                                'flock_parameters'))
 
         def set_location_ranges(self, x_limits, y_limits):
                 self.location_x_limits = x_limits
@@ -72,8 +57,8 @@ class BuildBoids(object):
 
         def validate(self):
                 assert(len(self.model.flock) == self.model.boid_count)
-                assert(self.model.boundary_x_limits is not None)
-                assert(self.model.boundary_y_limits is not None)
+                # assert(self.model.boundary_x_limits is not None)
+                # assert(self.model.boundary_y_limits is not None)
                 assert(self.model.avoid_radius is not None)
                 assert(self.model.flock_attraction is not None)
                 assert(self.model.flock_radius is not None)
