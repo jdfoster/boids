@@ -5,6 +5,7 @@ from matplotlib import animation
 
 class ControlBoids(object):
     def __init__(self, settings):
+        self.anim_settings = settings.pop('animation_settings')
         builder = BuildBoids()
         builder.set_location_ranges(**settings.pop('location_range'))
         builder.set_velocity_ranges(**settings.pop('velocity_range'))
@@ -21,5 +22,6 @@ class ControlBoids(object):
 
     def run_animation(self):
         anim = animation.FuncAnimation(self.view.figure, self.animator,
-                                       frames=50, interval=50)
+                                       frames=self.anim_settings['frames'],
+                                       interval=self.anim_settings['interval'])
         return anim

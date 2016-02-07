@@ -8,10 +8,12 @@ first_nested_data = {'x_limits': [2, 4], 'y_limits': [6, 8]}
 second_nested_data = {'boid_count': 2, 'flock_attraction': 4,
                       'avoid_radius': 6, 'flock_radius': 8,
                       'velocity_matching': 10}
+third_nested_data = {'frames': 50, 'interval': 50}
 test_data = {'boundary_limits': first_nested_data,
              'location_range': first_nested_data,
              'velocity_range': first_nested_data,
-             'flock_parameters': second_nested_data}
+             'flock_parameters': second_nested_data,
+             'animation_settings': third_nested_data}
 
 
 def test_ControlBoids_init():

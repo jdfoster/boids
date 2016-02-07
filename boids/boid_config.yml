@@ -13,3 +13,6 @@ location_range:
 velocity_range:
   x_limits: [0.0, 10.0]
   y_limits: [-20.0, 20.0]
+animation_settings:
+  frames: 50
+  interval: 50
