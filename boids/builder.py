@@ -12,8 +12,6 @@ class BuildBoids(object):
                 self.location_y_limits = None
                 self.velocity_x_limits = None
                 self.velocity_y_limits = None
-                self.model.boundary_x_limits = None
-                self.model.boundary_y_limits = None
                 self.model.avoid_radius = None
                 self.model.boid_count = None
                 self.model.flock_attraction = None
@@ -28,10 +26,6 @@ class BuildBoids(object):
         def set_velocity_ranges(self, x_limits, y_limits):
                 self.velocity_x_limits = x_limits
                 self.velocity_y_limits = y_limits
-
-        def set_boundary_limits(self, x_limits, y_limits):
-                self.model.boundary_x_limits = x_limits
-                self.model.boundary_y_limits = y_limits
 
         def set_flock_parameters(self, boid_count, flock_attraction,
                                  avoid_radius, flock_radius,
@@ -57,8 +51,6 @@ class BuildBoids(object):
 
         def validate(self):
                 assert(len(self.model.flock) == self.model.boid_count)
-                # assert(self.model.boundary_x_limits is not None)
-                # assert(self.model.boundary_y_limits is not None)
                 assert(self.model.avoid_radius is not None)
                 assert(self.model.flock_attraction is not None)
                 assert(self.model.flock_radius is not None)

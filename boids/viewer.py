@@ -2,11 +2,11 @@ from matplotlib import pyplot as plt
 
 
 class ViewBoids(object):
-    def __init__(self, boids_model):
+    def __init__(self, boids_model, x_limits, y_limits):
         self.boids = boids_model
         self.figure = plt.figure()
-        axes = plt.axes(xlim=(self.boids.boundary_x_limits),
-                        ylim=(self.boids.boundary_y_limits))
+        axes = plt.axes(xlim=(x_limits),
+                        ylim=(y_limits))
         self.scatter = axes.scatter(self.boids.current_locations[:,0],
                                     self.boids.current_locations[:,1])
 

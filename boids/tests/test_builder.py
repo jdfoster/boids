@@ -59,13 +59,6 @@ def test_set_velocity():
     assert(builder.location_y_limits == [4.1, 4.2])
 
 
-def test_set_boundary():
-    builder = BuildBoids()
-    builder.set_boundary_limits([-2.1, 2.2], [-4.1, 4.2])
-    assert(builder.model.boundary_x_limits == [-2.1, 2.2])
-    assert(builder.model.boundary_y_limits == [-4.1, 4.2])
-
-
 def test_set_flock_parameters():
     test_data = {'boid_count': 2, 'flock_attraction': 4,
                  'avoid_radius': 6, 'flock_radius': 8,
