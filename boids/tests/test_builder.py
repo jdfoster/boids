@@ -33,16 +33,16 @@ def test_validate():
     builder = BuildBoids()
 
     @raises(Exception)
-    def validate():
+    def validate_fail():
         builder.validate()
 
-    validate()  # Fails
+    validate_fail()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
     builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
-    validate()  # Fails
+    validate_fail()
     builder.generate_boids()
-    builder.validate()  # Passes
+    builder.validate()
 
 
 def test_set_location():

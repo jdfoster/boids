@@ -9,9 +9,6 @@ import yaml
 def test_bad_boids_regression():
     builder = BuildBoids()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
-    builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
-    builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
-    builder.generate_boids
     regression_data = yaml.load(open(os.path.join(
         os.path.dirname(__file__), 'fixtures', 'fixture.yml')))
     builder.generate_from_file(regression_data["before"])
@@ -27,7 +24,6 @@ def test_bad_boids_regression():
 
 
 def test_shift_boid_flock_centering():
-    # Uses default global values for flock centring
     builder = BuildBoids()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
@@ -41,7 +37,6 @@ def test_shift_boid_flock_centering():
 
 
 def test_shift_boid_collision_avoidance():
-    # Uses default global values for collision avoidance
     builder = BuildBoids()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
@@ -55,7 +50,6 @@ def test_shift_boid_collision_avoidance():
 
 
 def test_shift_boid_velocity_matching():
-    # Uses default global values for velocity matching
     builder = BuildBoids()
     builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
     builder.set_velocity_ranges([0.0, 10.0], [-20.0, 20.0])
