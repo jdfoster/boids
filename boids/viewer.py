@@ -7,6 +7,10 @@ class ViewBoids(object):
         self.figure = plt.figure()
         axes = plt.axes(xlim=(x_limits),
                         ylim=(y_limits))
+        axes.tick_params(axis='both', top='off', bottom='off',
+                         left='off', right='off', labelbottom='off',
+                         labelleft='off')
+        self.figure.tight_layout()
         self.scatter = axes.scatter(self.boids.current_locations[:,0],
                                     self.boids.current_locations[:,1])
 
