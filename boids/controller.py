@@ -1,7 +1,6 @@
 from builder import BuildBoids
 from viewer import ViewBoids
 from matplotlib import animation
-from matplotlib import pyplot as plt
 
 
 class ControlBoids(object):
@@ -16,11 +15,8 @@ class ControlBoids(object):
         self.view = ViewBoids(self.boids, **settings.pop('boundary_limits'))
 
         def animate_boid(frame_number):
-            if frame_number == self.anim_settings['frames'] - 1:
-                plt.close()
-            else:
-                self.boids.update_boids()
-                self.view.update_plt()
+            self.boids.update_boids()
+            self.view.update_plt()
 
         self.animator = animate_boid
 

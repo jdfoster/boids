@@ -18,19 +18,13 @@ test_data = {'boundary_limits': first_nested_data,
 
 def test_ControlBoids_init():
     with patch('boids.controller.BuildBoids') as mock_build, \
-         patch('boids.controller.ViewBoids') as mock_view, \
-         patch('boids.controller.plt') as mock_plt:
+         patch('boids.controller.ViewBoids') as mock_view:
         control = ControlBoids(copy(test_data))
         assert(control.boids.update_boids.call_count == 0)
         assert(control.view.update_plt.call_count == 0)
         control.animator(1)
         assert(control.boids.update_boids.call_count == 1)
         assert(control.view.update_plt.call_count == 1)
-        assert(mock_plt.close.call_count == 0)
-        control.animator(49)
-        assert(control.boids.update_boids.call_count == 1)
-        assert(control.view.update_plt.call_count == 1)
-        assert(mock_plt.close.call_count == 1)
 
 
 def test_run_animation():
