@@ -11,8 +11,8 @@ class ViewBoids(object):
                          left='off', right='off', labelbottom='off',
                          labelleft='off')
         self.figure.tight_layout()
-        self.scatter = axes.scatter(self.boids.current_locations[:,0],
-                                    self.boids.current_locations[:,1])
+        self.scatter = axes.scatter(self.boids.current_locations[:, 0],
+                                    self.boids.current_locations[:, 1])
 
     def update_plt(self):
         self.scatter.set_offsets(self.boids.current_locations)

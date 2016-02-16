@@ -47,3 +47,7 @@ class Boids(object):
         @property
         def current_locations(self):
                 return np.vstack([boid.location for boid in self.flock])
+
+        @property
+        def current_velocities(self):
+                return np.vstack([boid.velocity for boid in self.flock])
