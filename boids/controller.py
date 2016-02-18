@@ -23,5 +23,6 @@ class ControlBoids(object):
     def run_animation(self):
         anim = animation.FuncAnimation(self.view.figure, self.animator,
                                        frames=self.anim_settings['frames'],
-                                       interval=self.anim_settings['interval'])
+                                       interval=self.anim_settings['interval'],
+                                       repeat=0)
         return anim
