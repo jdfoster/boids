@@ -60,16 +60,16 @@ def test_set_velocity():
 
 
 def test_set_flock_parameters():
-    test_data = {'boid_count': 2, 'flock_attraction': 4,
+    test_data = {'boid_count': 2, 'flock_attraction': 4.2,
                  'avoid_radius': 6, 'flock_radius': 8,
-                 'velocity_matching': 10}
+                 'velocity_matching': 10.2}
     builder = BuildBoids()
     builder.set_flock_parameters(**test_data)
     assert(builder.model.boid_count == 2)
-    assert(builder.model.flock_attraction == 2)
+    assert(builder.model.flock_attraction == 2.1)
     assert(builder.model.avoid_radius == 6)
     assert(builder.model.flock_radius == 8)
-    assert(builder.model.velocity_matching == 5)
+    assert(builder.model.velocity_matching == 5.1)
 
 
 def test_finish():

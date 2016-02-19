@@ -20,16 +20,38 @@ class BuildBoids(object):
                 self.model.flock = None
 
         def set_location_ranges(self, x_limits, y_limits):
+                xlim_float = self._list_type_check(x_limits, float)
+                ylim_float = self._list_type_check(y_limits, float)
+                if not (xlim_float & ylim_float):
+                        raise TypeError('Location ranges should be list ' +
+                                        'with two floating point values')
                 self.location_x_limits = x_limits
                 self.location_y_limits = y_limits
 
         def set_velocity_ranges(self, x_limits, y_limits):
+                xlim_float = self._list_type_check(x_limits, float)
+                ylim_float = self._list_type_check(y_limits, float)
+                if not (xlim_float & ylim_float):
+                        raise TypeError('Velocity ranges should be list ' +
+                                        'with two floating point values')
                 self.velocity_x_limits = x_limits
                 self.velocity_y_limits = y_limits
 
         def set_flock_parameters(self, boid_count, flock_attraction,
                                  avoid_radius, flock_radius,
                                  velocity_matching):
+                list_int = [boid_count, avoid_radius, flock_radius]
+                list_float = [flock_attraction, velocity_matching]
+                param_int = self._list_type_check(list_int, int)
+                param_float = self._list_type_check(list_float, float)
+                if not param_int:
+                        raise TypeError('Flock parameters boid_count, ' +
+                                        'avoid_radius and flock_radius ' +
+                                        'should be integer values')
+                if not param_float:
+                        raise TypeError('Flock parameters flock_attraction ' +
+                                        'and velocity_matching should be ' +
+                                        'floating point values')
                 self.model.boid_count = boid_count
                 self.model.avoid_radius = avoid_radius
                 self.model.flock_attraction = flock_attraction / boid_count
@@ -59,3 +81,7 @@ class BuildBoids(object):
         def finish(self):
                 self.validate()
                 return self.model
+
+        def _list_type_check(self, container, dat_type):
+                bool_list = [isinstance(item, dat_type) for item in container]
+                return all(bool_list)

@@ -4,10 +4,10 @@ import matplotlib
 from copy import copy
 
 
-first_nested_data = {'x_limits': [2, 4], 'y_limits': [6, 8]}
-second_nested_data = {'boid_count': 2, 'flock_attraction': 4,
+first_nested_data = {'x_limits': [2.1, 4.1], 'y_limits': [6.1, 8.1]}
+second_nested_data = {'boid_count': 2, 'flock_attraction': 4.2,
                       'avoid_radius': 6, 'flock_radius': 8,
-                      'velocity_matching': 10}
+                      'velocity_matching': 10.2}
 third_nested_data = {'frames': 50, 'interval': 50}
 test_data = {'boundary_limits': first_nested_data,
              'location_range': first_nested_data,
