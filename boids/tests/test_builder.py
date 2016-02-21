@@ -1,9 +1,10 @@
 from ..builder import BuildBoids
 from ..model import Boids
-from nose.tools import assert_equal, raises
-from numpy.testing import assert_array_equal, assert_array_less, assert_raises
+from copy import copy
 from mock import patch, MagicMock
+from nose.tools import assert_equal, raises
 from numpy import linspace
+from numpy.testing import assert_array_equal, assert_array_less
 import yaml
 
 
@@ -53,11 +54,47 @@ def test_set_location():
     assert(builder.location_y_limits == [4.1, 4.2])
 
 
+def generate_broken_vectors():
+    test_data = [2.1, 2.2, 4.1, 4.2]
+    fixture_list = []
+    for index, item in enumerate(test_data):
+        new_data = copy(test_data)
+        new_data[index] = int(item)
+        new_list = [[new_data[0], new_data[1]],
+                    [new_data[2], new_data[3]]]
+        fixture_list.append(new_list)
+    return fixture_list
+
+
+def test_set_location_fail():
+    fixtures = generate_broken_vectors()
+    builder = BuildBoids()
+
+    @raises(TypeError)
+    def set_location_fail(*values):
+        builder.set_location_ranges(*values)
+
+    for fixture in fixtures:
+        set_location_fail(*fixture)
+
+
 def test_set_velocity():
     builder = BuildBoids()
-    builder.set_location_ranges([2.1, 2.2], [4.1, 4.2])
-    assert(builder.location_x_limits == [2.1, 2.2])
-    assert(builder.location_y_limits == [4.1, 4.2])
+    builder.set_velocity_ranges([2.1, 2.2], [4.1, 4.2])
+    assert(builder.velocity_x_limits == [2.1, 2.2])
+    assert(builder.velocity_y_limits == [4.1, 4.2])
+
+
+def test_set_velocity_fail():
+    fixtures = generate_broken_vectors()
+    builder = BuildBoids()
+
+    @raises(TypeError)
+    def set_velocity_fail(*values):
+        builder.set_velocity_ranges(*values)
+
+    for fixture in fixtures:
+        set_velocity_fail(*fixture)
 
 
 def test_set_flock_parameters():
@@ -71,6 +108,34 @@ def test_set_flock_parameters():
     assert(builder.model.avoid_radius == 6)
     assert(builder.model.flock_radius == 8)
     assert(builder.model.velocity_matching == 5.1)
+
+
+def generate_broken_flock_param():
+    test_data = {'boid_count': 2, 'flock_attraction': 4.2,
+                 'avoid_radius': 6, 'flock_radius': 8,
+                 'velocity_matching': 10.2}
+    fixture_list = []
+    for key in test_data:
+        new_data = copy(test_data)
+        replace_item = new_data.pop(key)
+        if isinstance(replace_item, float):
+            new_data[key] = int(replace_item)
+        if isinstance(replace_item, int):
+            new_data[key] = float(replace_item)
+        fixture_list.append(new_data)
+    return fixture_list
+
+
+def test_set_flock_parameters_fails():
+    fixtures = generate_broken_flock_param()
+    builder = BuildBoids()
+
+    @raises(TypeError)
+    def set_flock_parameters_fail(**params):
+        builder.set_flock_parameters(**params)
+
+    for fixture in fixtures:
+        set_flock_parameters_fail(**fixture)
 
 
 def test_finish():
