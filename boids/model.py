@@ -3,6 +3,15 @@ import numpy as np
 
 class Boid(object):
         def __init__(self, x, y, xv, yv, host):
+                list_float = [x, y, xv, yv]
+                vector_float = self._list_type_check(list_float, float)
+                host_is_Boids = type(host).__name__ == 'Boids'
+                if not vector_float:
+                        raise TypeError('Boid vector values should be ' +
+                                        'floating point values')
+                if not host_is_Boids:
+                        raise TypeError('The host for the Boid class must ' +
+                                        'be the Boids class')
                 self.location = np.array([x, y])
                 self.velocity = np.array([xv, yv])
                 self.host = host
@@ -26,6 +35,10 @@ class Boid(object):
                                            self.host.velocity_matching)
 
                 return location_delta
+
+        def _list_type_check(self, container, dat_type):
+                bool_list = [isinstance(item, dat_type) for item in container]
+                return all(bool_list)
 
 
 class Boids(object):

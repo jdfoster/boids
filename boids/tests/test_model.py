@@ -30,8 +30,8 @@ def test_shift_boid_flock_centering():
     builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     builder.generate_boids()
     boids = builder.finish()
-    protagonist = Boid(0, 0, 0, 0, boids)
-    antagonist = Boid(8, 8, 50, 50, boids)
+    protagonist = Boid(0., 0., 0., 0., boids)
+    antagonist = Boid(8., 8., 50., 50., boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [0.1266, 0.1266])
 
@@ -43,8 +43,8 @@ def test_shift_boid_collision_avoidance():
     builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     builder.generate_boids()
     boids = builder.finish()
-    protagonist = Boid(0, 0, 0, 0, boids)
-    antagonist = Boid(4, 4, 50, 50, boids)
+    protagonist = Boid(0., 0., 0., 0., boids)
+    antagonist = Boid(4., 4., 50., 50., boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [-3.8742, -3.8742])
 
@@ -56,7 +56,7 @@ def test_shift_boid_velocity_matching():
     builder.set_location_ranges([-450.0, 50.0], [300.0, 600.0])
     builder.generate_boids()
     boids = builder.finish()
-    protagonist = Boid(0, 0, 0, 0, boids)
-    antagonist = Boid(80, 80, 50, 50, boids)
+    protagonist = Boid(0., 0., 0., 0., boids)
+    antagonist = Boid(80., 80., 50., 50., boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [0.016, 0.016])

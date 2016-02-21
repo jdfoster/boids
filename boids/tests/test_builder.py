@@ -3,6 +3,7 @@ from ..model import Boids
 from nose.tools import assert_equal, raises
 from numpy.testing import assert_array_equal, assert_array_less, assert_raises
 from mock import patch, MagicMock
+from numpy import linspace
 import yaml
 
 
@@ -22,7 +23,7 @@ def test_generate_boids():
 
 
 def test_generate_from_file():
-    test_data = [range(4)] * 4
+    test_data = [linspace(0, 3, 4)] * 4
     builder = BuildBoids()
     builder.generate_from_file(test_data)
     assert(len(builder.model.flock) == 4)
