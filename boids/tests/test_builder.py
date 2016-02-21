@@ -1,6 +1,7 @@
 from ..builder import BuildBoids
 from ..model import Boids
-from copy import copy
+from generate_fixtures import generate_broken_flock_param, \
+    generate_broken_limits
 from mock import patch, MagicMock
 from nose.tools import assert_equal, raises
 from numpy import linspace
@@ -54,28 +55,16 @@ def test_set_location():
     assert(builder.location_y_limits == [4.1, 4.2])
 
 
-def generate_broken_vectors():
-    test_data = [2.1, 2.2, 4.1, 4.2]
-    fixture_list = []
-    for index, item in enumerate(test_data):
-        new_data = copy(test_data)
-        new_data[index] = int(item)
-        new_list = [[new_data[0], new_data[1]],
-                    [new_data[2], new_data[3]]]
-        fixture_list.append(new_list)
-    return fixture_list
-
-
 def test_set_location_fail():
-    fixtures = generate_broken_vectors()
+    fixtures = generate_broken_limits()
     builder = BuildBoids()
 
     @raises(TypeError)
-    def set_location_fail(*values):
-        builder.set_location_ranges(*values)
+    def set_location_fail(**values):
+        builder.set_location_ranges(**values)
 
     for fixture in fixtures:
-        set_location_fail(*fixture)
+        set_location_fail(**fixture)
 
 
 def test_set_velocity():
@@ -86,15 +75,15 @@ def test_set_velocity():
 
 
 def test_set_velocity_fail():
-    fixtures = generate_broken_vectors()
+    fixtures = generate_broken_limits()
     builder = BuildBoids()
 
     @raises(TypeError)
-    def set_velocity_fail(*values):
-        builder.set_velocity_ranges(*values)
+    def set_velocity_fail(**values):
+        builder.set_velocity_ranges(**values)
 
     for fixture in fixtures:
-        set_velocity_fail(*fixture)
+        set_velocity_fail(**fixture)
 
 
 def test_set_flock_parameters():
@@ -108,22 +97,6 @@ def test_set_flock_parameters():
     assert(builder.model.avoid_radius == 6)
     assert(builder.model.flock_radius == 8)
     assert(builder.model.velocity_matching == 5.1)
-
-
-def generate_broken_flock_param():
-    test_data = {'boid_count': 2, 'flock_attraction': 4.2,
-                 'avoid_radius': 6, 'flock_radius': 8,
-                 'velocity_matching': 10.2}
-    fixture_list = []
-    for key in test_data:
-        new_data = copy(test_data)
-        replace_item = new_data.pop(key)
-        if isinstance(replace_item, float):
-            new_data[key] = int(replace_item)
-        if isinstance(replace_item, int):
-            new_data[key] = float(replace_item)
-        fixture_list.append(new_data)
-    return fixture_list
 
 
 def test_set_flock_parameters_fails():

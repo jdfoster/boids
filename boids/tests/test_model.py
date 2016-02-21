@@ -1,6 +1,6 @@
 from ..builder import BuildBoids
-from ..model import Boid, Boids
-from copy import copy
+from ..model import Boid
+from generate_fixtures import generate_broken_boid_data
 from nose.tools import assert_almost_equal, assert_equal, raises
 from numpy.testing import assert_array_equal, assert_array_less
 import os
@@ -61,22 +61,6 @@ def test_shift_boid_velocity_matching():
     antagonist = Boid(80., 80., 50., 50., boids)
     assert_array_equal(protagonist.shift_boid(antagonist),
                        [0.016, 0.016])
-
-
-def generate_broken_boid_data():
-    test_data = {'x': 4.2, 'y': 4.2,
-                 'xv': 6.2, 'yv': 6.2,
-                 'host': Boids()}
-    fixture_list = []
-    for key in test_data:
-        new_data = copy(test_data)
-        replace_item = new_data.pop(key)
-        if isinstance(replace_item, float):
-            new_data[key] = int(replace_item)
-        if type(replace_item).__name__ == 'Boids':
-            new_data[key] = []
-        fixture_list.append(new_data)
-    return fixture_list
 
 
 def test_boid_init_fail():
