@@ -1,7 +1,8 @@
+from boid_exceptions import BoidExceptions
 from matplotlib import pyplot as plt
 
 
-class ViewBoids(object):
+class ViewBoids(BoidExceptions):
     def __init__(self, model, x_limits, y_limits):
         xlim_float = self._list_type_check(x_limits, float)
         ylim_float = self._list_type_check(y_limits, float)
@@ -20,7 +21,3 @@ class ViewBoids(object):
 
     def update_plt(self):
         self.scatter.set_offsets(self.model.current_locations)
-
-    def _list_type_check(self, container, dat_type):
-                bool_list = [isinstance(item, dat_type) for item in container]
-                return all(bool_list)

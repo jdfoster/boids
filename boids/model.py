@@ -1,7 +1,8 @@
 import numpy as np
+from boid_exceptions import BoidExceptions
 
 
-class Boid(object):
+class Boid(BoidExceptions):
         def __init__(self, x, y, xv, yv, host):
                 list_float = [x, y, xv, yv]
                 vector_float = self._list_type_check(list_float, float)
@@ -35,10 +36,6 @@ class Boid(object):
                                            self.host.velocity_matching)
 
                 return location_delta
-
-        def _list_type_check(self, container, dat_type):
-                bool_list = [isinstance(item, dat_type) for item in container]
-                return all(bool_list)
 
 
 class Boids(object):

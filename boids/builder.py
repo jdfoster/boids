@@ -1,8 +1,9 @@
 from model import Boid, Boids
+from boid_exceptions import BoidExceptions
 import numpy as np
 
 
-class BuildBoids(object):
+class BuildBoids(BoidExceptions):
         def __init__(self):
                 self.start_boids()
 
@@ -81,7 +82,3 @@ class BuildBoids(object):
         def finish(self):
                 self.validate()
                 return self.model
-
-        def _list_type_check(self, container, dat_type):
-                bool_list = [isinstance(item, dat_type) for item in container]
-                return all(bool_list)
