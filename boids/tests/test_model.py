@@ -1,6 +1,7 @@
 from ..builder import BuildBoids
 from ..model import Boid
-from generate_fixtures import generate_broken_boid_data
+from generate_fixtures import generate_broken_boid_data, \
+    negative_fixture_check
 from nose.tools import assert_almost_equal, assert_equal, raises
 from numpy.testing import assert_array_equal, assert_array_less
 import os
@@ -65,10 +66,5 @@ def test_shift_boid_velocity_matching():
 
 def test_boid_init_fail():
     fixtures = generate_broken_boid_data()
-
-    @raises(TypeError)
-    def boid_init_fail(**values):
-        Boid(**values)
-
-    for fixture in fixtures:
-        boid_init_fail(**fixture)
+    negative_fixture_check(Boid, fixtures,
+                           TypeError)

@@ -1,7 +1,7 @@
 from ..builder import BuildBoids
 from ..model import Boids
 from generate_fixtures import generate_broken_flock_param, \
-    generate_broken_limits
+    generate_broken_limits, negative_fixture_check
 from mock import patch, MagicMock
 from nose.tools import assert_equal, raises
 from numpy import linspace
@@ -58,13 +58,8 @@ def test_set_location():
 def test_set_location_fail():
     fixtures = generate_broken_limits()
     builder = BuildBoids()
-
-    @raises(TypeError)
-    def set_location_fail(**values):
-        builder.set_location_ranges(**values)
-
-    for fixture in fixtures:
-        set_location_fail(**fixture)
+    negative_fixture_check(builder.set_location_ranges,
+                           fixtures, TypeError)
 
 
 def test_set_velocity():
@@ -77,13 +72,8 @@ def test_set_velocity():
 def test_set_velocity_fail():
     fixtures = generate_broken_limits()
     builder = BuildBoids()
-
-    @raises(TypeError)
-    def set_velocity_fail(**values):
-        builder.set_velocity_ranges(**values)
-
-    for fixture in fixtures:
-        set_velocity_fail(**fixture)
+    negative_fixture_check(builder.set_velocity_ranges,
+                           fixtures, TypeError)
 
 
 def test_set_flock_parameters():
@@ -102,13 +92,8 @@ def test_set_flock_parameters():
 def test_set_flock_parameters_fails():
     fixtures = generate_broken_flock_param()
     builder = BuildBoids()
-
-    @raises(TypeError)
-    def set_flock_parameters_fail(**params):
-        builder.set_flock_parameters(**params)
-
-    for fixture in fixtures:
-        set_flock_parameters_fail(**fixture)
+    negative_fixture_check(builder.set_flock_parameters,
+                           fixtures, TypeError)
 
 
 def test_finish():

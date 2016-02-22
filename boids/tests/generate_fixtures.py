@@ -1,5 +1,6 @@
 from ..model import Boids
 from copy import copy
+from nose.tools import raises
 
 
 def generate_broken_boid_data():
@@ -40,8 +41,8 @@ def generate_broken_limits():
     for index, item in enumerate(test_data):
         new_data = copy(test_data)
         new_data[index] = int(item)
-        new_list = {'x_limits':[new_data[0], new_data[1]],
-                    'y_limits':[new_data[2], new_data[3]]}
+        new_list = {'x_limits': [new_data[0], new_data[1]],
+                    'y_limits': [new_data[2], new_data[3]]}
         fixture_list.append(new_list)
     return fixture_list
 
@@ -58,3 +59,12 @@ def generate_example_settings():
                  'flock_parameters': second_nested_data,
                  'animation_settings': third_nested_data}
     return test_data
+
+
+def negative_fixture_check(test_funct, fixtures, error_type):
+    @raises(error_type)
+    def set_flock_parameters_fail(**params):
+        test_funct(**params)
+
+    for fixture in fixtures:
+        set_flock_parameters_fail(**fixture)
