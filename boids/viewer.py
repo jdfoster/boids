@@ -3,12 +3,8 @@ from matplotlib import pyplot as plt
 
 
 class ViewBoids(BoidExceptions):
+    @BoidExceptions.check_xy_limits
     def __init__(self, model, x_limits, y_limits):
-        xlim_float = self._list_type_check(x_limits, float)
-        ylim_float = self._list_type_check(y_limits, float)
-        if not (xlim_float & ylim_float):
-            raise TypeError('Axes limit values should be a list ' +
-                            'with two floating point values')
         self.model = model
         self.figure = plt.figure()
         axes = plt.axes(xlim=(x_limits), ylim=(y_limits))

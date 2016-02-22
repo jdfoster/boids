@@ -20,21 +20,13 @@ class BuildBoids(BoidExceptions):
                 self.model.velocity_matching = None
                 self.model.flock = None
 
+        @BoidExceptions.check_xy_limits
         def set_location_ranges(self, x_limits, y_limits):
-                xlim_float = self._list_type_check(x_limits, float)
-                ylim_float = self._list_type_check(y_limits, float)
-                if not (xlim_float & ylim_float):
-                        raise TypeError('Location ranges should be list ' +
-                                        'with two floating point values')
                 self.location_x_limits = x_limits
                 self.location_y_limits = y_limits
 
+        @BoidExceptions.check_xy_limits
         def set_velocity_ranges(self, x_limits, y_limits):
-                xlim_float = self._list_type_check(x_limits, float)
-                ylim_float = self._list_type_check(y_limits, float)
-                if not (xlim_float & ylim_float):
-                        raise TypeError('Velocity ranges should be list ' +
-                                        'with two floating point values')
                 self.velocity_x_limits = x_limits
                 self.velocity_y_limits = y_limits
 
