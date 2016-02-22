@@ -1,7 +1,9 @@
 from ..viewer import ViewBoids
 from ..builder import BuildBoids
-from mock import patch, MagicMock
+from generate_fixtures import generate_broken_limits, \
+    negative_fixture_check
 from matplotlib import image as img
+from mock import patch, MagicMock
 from StringIO import StringIO
 import numpy as np
 import os
@@ -47,3 +49,14 @@ def test_plot_comparison():
             compare_view_generated_plot(view, test_image)
             boids.update_boids()
             view.update_plt()
+
+
+def test_plot_limits_fail():
+    mock_boids = MagicMock()
+    test_array = np.array([0, 1]) * np.ones(10)[:, np.newaxis]
+    mock_boids.current_locations = test_array.copy()
+    fixtures = generate_broken_limits()
+    for fixture in fixtures:
+        fixture['model'] = mock_boids
+    negative_fixture_check(ViewBoids, fixtures,
+                           TypeError)
