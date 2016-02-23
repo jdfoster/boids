@@ -3,9 +3,16 @@ class BoidExceptions(object):
                 bool_list = [isinstance(item, dat_type) for item in container]
                 return all(bool_list)
 
-    def _check_exception(self, test_list, dat_type, er_type):
+    def _map_isinstance(self, container, dat_type):
+        def type_check(item):
+            return isinstance(item, dat_type)
+
+        bool_logic = map(type_check, container)
+        return all(bool_logic)
+
+    def _check_exception(self, test_funct, er_type):
         try:
-            assert self._list_type_check(test_list, dat_type)
+            assert test_funct
 
         except AssertionError:
             raise er_type
@@ -17,13 +24,15 @@ class BoidExceptions(object):
                                 'floating point values')
 
             if len(args) == 2:
-                for arg in args:
-                    self._check_exception(arg, float, er_type)
+                is_float = all([self._map_isinstance(arg, float) for
+                                arg in args])
 
-            if len(kwargs) > 0:
-                self._check_exception(kwargs['x_limits'], float, er_type)
-                self._check_exception(kwargs['y_limits'], float, er_type)
+            elif len(kwargs) > 0:
+                list_float = [kwargs['x_limits'], kwargs['y_limits']]
+                is_float = all([self._map_isinstance(item, float) for
+                                item in list_float])
 
+            self._check_exception(is_float, er_type)
             funct(self, *args, **kwargs)
 
         return _wrapped_funct
@@ -42,15 +51,17 @@ class BoidExceptions(object):
                 list_int = [args[0], args[2], args[3]]
                 list_float = [args[1], args[4]]
 
-            if len(kwargs) > 0:
+            elif len(kwargs) > 0:
                 list_int = [kwargs['boid_count'],
                             kwargs['avoid_radius'],
                             kwargs['flock_radius']]
                 list_float = [kwargs['flock_attraction'],
                               kwargs['velocity_matching']]
 
-            self._check_exception(list_int, int, int_er_type)
-            self._check_exception(list_float, float, float_er_type)
+            is_int = self._map_isinstance(list_int, int)
+            is_float = self._map_isinstance(list_float, float)
+            self._check_exception(is_int, int_er_type)
+            self._check_exception(is_float, float_er_type)
             funct(self, *args, **kwargs)
 
         return _wrapped_funct

@@ -16,8 +16,10 @@ def test_ViewBoids():
     y_limits = [-100., -50.]
     test_array = np.array([0, 1]) * np.ones(10)[:, np.newaxis]
     mock_boids.current_locations = test_array.copy()
+    fixture = {'model': mock_boids, 'x_limits': x_limits,
+               'y_limits': y_limits}
     with patch('boids.viewer.plt') as mock_plt:
-        view = ViewBoids(mock_boids, x_limits, y_limits)
+        view = ViewBoids(**fixture)
         mock_plt.axes.assert_called_with(xlim=[20., 80.], ylim=[-100., -50.])
         view.update_plt()
         called_with = view.scatter.set_offsets.call_args[0][0]
@@ -35,16 +37,18 @@ def compare_view_generated_plot(view_obj, test_image):
 def test_plot_comparison():
     with open(os.path.join(os.path.dirname(__file__), 'fixtures',
                            'fixture.yml'), 'r') as fixture_file, \
-    open(os.path.join(os.path.dirname(__file__), 'fixtures',
-                      'first.png'), 'r') as first_image, \
-    open(os.path.join(os.path.dirname(__file__), 'fixtures',
-                      'second.png'), 'r') as second_image:
+        open(os.path.join(os.path.dirname(__file__), 'fixtures',
+                          'first.png'), 'r') as first_image, \
+        open(os.path.join(os.path.dirname(__file__), 'fixtures',
+                          'second.png'), 'r') as second_image:
         builder = BuildBoids()
         builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
         regression_data = yaml.load(fixture_file)
         builder.generate_from_file(regression_data["before"])
         boids = builder.finish()
-        view = ViewBoids(boids, [-500., 1500.], [-500., 1500.])
+        fixture = {'model': boids, 'x_limits': [-500., 1500.],
+                   'y_limits': [-500., 1500.]}
+        view = ViewBoids(**fixture)
         for test_image in [first_image, second_image]:
             compare_view_generated_plot(view, test_image)
             boids.update_boids()
