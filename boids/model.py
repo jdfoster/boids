@@ -3,7 +3,7 @@ from boid_exceptions import BoidExceptions
 
 
 class Boid(BoidExceptions):
-        @BoidExceptions.check_boid_init
+        @BoidExceptions._check_boid_init
         def __init__(self, x, y, xv, yv, host):
                 self.location = np.array([x, y])
                 self.velocity = np.array([xv, yv])

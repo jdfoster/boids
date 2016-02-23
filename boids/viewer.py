@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 class ViewBoids(BoidExceptions):
-    @BoidExceptions.check_xy_limits
+    @BoidExceptions._check_xy_limits
     def __init__(self, model, x_limits, y_limits):
         self.model = model
         self.figure = plt.figure()

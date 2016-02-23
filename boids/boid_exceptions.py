@@ -14,7 +14,7 @@ class BoidExceptions(object):
             raise er_type
 
     @classmethod
-    def check_xy_limits(self, funct):
+    def _check_xy_limits(self, funct):
         def _wrapped_funct(self, *args, **kwargs):
             er_type = TypeError('X-Y limits should be a list with two ' +
                                 'floating point values')
@@ -41,7 +41,7 @@ class BoidExceptions(object):
         return _wrapped_funct
 
     @classmethod
-    def check_flock_params(self, funct):
+    def _check_flock_params(self, funct):
         def _wrapped_funct(self, *args, **kwargs):
             int_er_type = TypeError('Flock parameters boid_count, ' +
                                     'avoid_radius and flock_radius ' +
@@ -74,7 +74,7 @@ class BoidExceptions(object):
         return _wrapped_funct
 
     @classmethod
-    def check_boid_init(self, funct):
+    def _check_boid_init(self, funct):
         def _wrapped_funct(self, *args, **kwargs):
             vector_er = TypeError('Boid vector values should be ' +
                                   'floating point values')
