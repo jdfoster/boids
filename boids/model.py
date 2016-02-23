@@ -3,16 +3,8 @@ from boid_exceptions import BoidExceptions
 
 
 class Boid(BoidExceptions):
+        @BoidExceptions.check_boid_init
         def __init__(self, x, y, xv, yv, host):
-                list_float = [x, y, xv, yv]
-                vector_float = self._list_type_check(list_float, float)
-                host_is_Boids = type(host).__name__ == 'Boids'
-                if not vector_float:
-                        raise TypeError('Boid vector values should be ' +
-                                        'floating point values')
-                if not host_is_Boids:
-                        raise TypeError('The host for the Boid class must ' +
-                                        'be the Boids class')
                 self.location = np.array([x, y])
                 self.velocity = np.array([xv, yv])
                 self.host = host

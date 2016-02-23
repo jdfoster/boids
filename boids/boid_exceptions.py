@@ -1,8 +1,4 @@
 class BoidExceptions(object):
-    def _list_type_check(self, container, dat_type):
-                bool_list = [isinstance(item, dat_type) for item in container]
-                return all(bool_list)
-
     def _map_isinstance(self, container, dat_type):
         def type_check(item):
             return isinstance(item, dat_type)
@@ -72,6 +68,37 @@ class BoidExceptions(object):
                 is_float = self._map_isinstance(list_float, float)
                 self._check_exception(is_int, int_er_type)
                 self._check_exception(is_float, float_er_type)
+
+            funct(self, *args, **kwargs)
+
+        return _wrapped_funct
+
+    @classmethod
+    def check_boid_init(self, funct):
+        def _wrapped_funct(self, *args, **kwargs):
+            vector_er = TypeError('Boid vector values should be ' +
+                                  'floating point values')
+            host_er = TypeError('The host for the Boid class must ' +
+                                'be the Boids class')
+            vector_list = None
+            host = None
+
+            if len(args) == 5:
+                vector_list = args[:-1]
+                host = args[-1]
+
+            elif len(kwargs) == 5:
+                vector_list = [kwargs['x'], kwargs['y'], kwargs['xv'],
+                               kwargs['yv']]
+                host = kwargs['host']
+
+            if vector_list is not None:
+                is_float = self._map_isinstance(vector_list, float)
+                self._check_exception(is_float, vector_er)
+
+            if host is not None:
+                host_is_Boids = type(host).__name__ == 'Boids'
+                self._check_exception(host_is_Boids, host_er)
 
             funct(self, *args, **kwargs)
 
