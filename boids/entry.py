@@ -27,54 +27,50 @@ class ParseBoids(object):
         parser.add_argument('--config', '-c',  type=str, help=self.text_config)
         parser.add_argument('--save', '-s', type=str, help=self.text_save)
         self.arguments = parser.parse_args()
-        self.process_parse()
+        self.process_config()
 
-    def process_parse(self):
+    def process_config(self):
         if self.arguments.save is not None:
             self.save_config()
-            return
-
-        if self.arguments.config is not None:
+        elif self.arguments.config is not None:
             self.open_config()
-
-        self.run_boids()
-
-        if self.arguments.save is not None:
-            # self.save_movie()
-            pass
+            self.process_boids()
         else:
-            plt.show()
+            self.process_boids()
 
     def save_config(self):
         try:
-            output_file = open(self.arguments.save, 'w')
-            output_file.write(yaml.dump(self.settings))
+            config_save = open(self.arguments.save, 'w')
+            config_save.write(yaml.dump(self.settings))
+            config_save.close()
         except IOError:
-            pass
-        finally:
-            output_file.close()
+            raise IOError('Unablr to write configuration file')
 
     def open_config(self):
         try:
             expected_keys = set(self.settings.keys())
-            input_file = open(self.arguments.config, 'r')
-            self.settings = yaml.load(input_file)
+            config_read = open(self.arguments.config, 'r')
+            self.settings = yaml.load(config_read)
             actual_keys = set(self.settings.keys())
             assert expected_keys.issubset(actual_keys)
+            config_read.close()
         except AssertionError:
             raise KeyError('Key(s) missing form given configuration file')
         except AttributeError:
             raise IOError('Incorrectly formatted YAML file')
         except IOError:
             raise IOError('Unable to open given configuration file')
-        finally:
-            input_file.close()
 
-    def run_boids(self):
+    def process_boids(self):
         self.control = ControlBoids(self.settings)
         self.boid_anim = self.control.run_animation()
+        if self.arguments.movie is not None:
+            self.boid_anim.save(self.arguments.movie,
+                                metadata={'title': 'Boids'})
+        else:
+            plt.show()
 
 
 if __name__ == "__main__":
-    boidpar = ParseBoids()
-    boidpar.entry_point()
+    parseboids = ParseBoids()
+    parseboids.entry_point()
