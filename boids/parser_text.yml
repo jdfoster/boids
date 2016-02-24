@@ -3,9 +3,9 @@ a movie. This program is an implementation of the Boids model
 described in the article by Reynolds (1987), see CITATION file for
 more information.'
 
-epi: 'Example: boids --movie boids.mp4'
+epi: 'Example: boids --save boids.mp4'
 
-movie: 'Filename for the returned MPEG movie of the generated
+save: 'Filename for the returned MPEG movie of the generated
 animation. Given filename needs to have the extension
 mp4/MP4. Animation is shown in window in the absence of this switch.'
 
@@ -14,5 +14,5 @@ should in YAML format with the extension yml/YML. This file can be
 generated using the --save switch. Defaults are used in the absence of
 this switch.'
 
-save: 'Filename for a generated configuration file. Generated file is
+generate: 'Filename for a generated configuration file. Generated file is
 populated with default values. Use without other switches.'

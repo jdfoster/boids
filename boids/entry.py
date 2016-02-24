@@ -1,5 +1,5 @@
 from controller import ControlBoids
-from argparse import ArgumentParser, Action, RawDescriptionHelpFormatter
+from argparse import ArgumentParser
 from matplotlib import pyplot as plt
 import os
 import yaml
@@ -16,35 +16,35 @@ class ParseBoids(object):
 
         self.text_main = parse_text['main']
         self.text_epi = parse_text['epi']
-        self.text_movie = parse_text['movie']
-        self.text_config = parse_text['config']
         self.text_save = parse_text['save']
+        self.text_config = parse_text['config']
+        self.text_generate = parse_text['generate']
 
     def entry_point(self):
         parser = ArgumentParser(description=self.text_main,
                                 epilog=self.text_epi)
-        parser.add_argument('--movie', '-m', type=str, help=self.text_movie)
-        parser.add_argument('--config', '-c',  type=str, help=self.text_config)
         parser.add_argument('--save', '-s', type=str, help=self.text_save)
+        parser.add_argument('--config', '-c',  type=str, help=self.text_config)
+        parser.add_argument('--generate', '-g', type=str, help=self.text_generate)
         self.arguments = parser.parse_args()
         self.process_config()
 
     def process_config(self):
-        if self.arguments.save is not None:
-            self.save_config()
+        if self.arguments.generate is not None:
+            self.generate_config()
         elif self.arguments.config is not None:
             self.open_config()
             self.process_boids()
         else:
             self.process_boids()
 
-    def save_config(self):
+    def generate_config(self):
         try:
-            config_save = open(self.arguments.save, 'w')
-            config_save.write(yaml.dump(self.settings))
-            config_save.close()
+            config_generate = open(self.arguments.generate, 'w')
+            config_generate.write(yaml.dump(self.settings))
+            config_generate.close()
         except IOError:
-            raise IOError('Unablr to write configuration file')
+            raise IOError('Unable to write configuration file')
 
     def open_config(self):
         try:
@@ -64,8 +64,8 @@ class ParseBoids(object):
     def process_boids(self):
         self.control = ControlBoids(self.settings)
         self.boid_anim = self.control.run_animation()
-        if self.arguments.movie is not None:
-            self.boid_anim.save(self.arguments.movie,
+        if self.arguments.save is not None:
+            self.boid_anim.save(self.arguments.save,
                                 metadata={'title': 'Boids'})
         else:
             plt.show()
