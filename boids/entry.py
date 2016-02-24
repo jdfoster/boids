@@ -1,4 +1,6 @@
+from controller import ControlBoids
 from argparse import ArgumentParser, Action, RawDescriptionHelpFormatter
+from matplotlib import pyplot as plt
 import os
 import yaml
 
@@ -25,12 +27,23 @@ class ParseBoids(object):
         parser.add_argument('--config', '-c',  type=str, help=self.text_config)
         parser.add_argument('--save', '-s', type=str, help=self.text_save)
         self.arguments = parser.parse_args()
+        self.process_parse()
+
+    def process_parse(self):
         if self.arguments.save is not None:
             self.save_config()
-        elif self.arguments.config is not None:
+            return
+
+        if self.arguments.config is not None:
             self.open_config()
-        else:
+
+        self.run_boids()
+
+        if self.arguments.save is not None:
+            # self.save_movie()
             pass
+        else:
+            plt.show()
 
     def save_config(self):
         try:
@@ -56,6 +69,10 @@ class ParseBoids(object):
             raise IOError('Unable to open given configuration file')
         finally:
             input_file.close()
+
+    def run_boids(self):
+        self.control = ControlBoids(self.settings)
+        self.boid_anim = self.control.run_animation()
 
 
 if __name__ == "__main__":
