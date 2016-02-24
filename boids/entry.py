@@ -1,24 +1,36 @@
 from argparse import ArgumentParser, Action, RawDescriptionHelpFormatter
+import os
+import yaml
 
 
 class ParseBoids(object):
     def __init__(self):
-        self.text_main = ('') 
-        self.text_epi = ('')
-        self.text_movie = ('')
-        self.text_config = ('')
-        self.text_save = ('')
+        with open(os.path.join(os.path.dirname(__file__), 'parser_text.yml')) \
+             as text_file, open(os.path.join(os.path.dirname(__file__),
+                                             'boids_default_config.yml')) \
+             as default_config:
+            parse_text = yaml.load(text_file)
+            self.settings = yaml.load(default_config)
+
+        self.text_main = parse_text['main']
+        self.text_epi = parse_text['epi']
+        self.text_movie = parse_text['movie']
+        self.text_config = parse_text['config']
+        self.text_save = parse_text['save']
 
     def entry_point(self):
-        parser = ArgumentParser(description = self.text_main,
-                                epilog = self.text_epi)
-        parser.add_argument('--movie', '-m', type = str,
-                            help = self.text_movie)
-        parser.add_argument('--config', '-c',  type = str,
-                            help = self.text_config)
-        parser.add_argument('--save', '-s', type = str,
-                            help = self.text_save)
+        parser = ArgumentParser(description=self.text_main,
+                                epilog=self.text_epi)
+        parser.add_argument('--movie', '-m', type=str, help=self.text_movie)
+        parser.add_argument('--config', '-c',  type=str, help=self.text_config)
+        parser.add_argument('--save', '-s', type=str, help=self.text_save)
         self.arguments = parser.parse_args()
+        if self.arguments.save is not None:
+            pass
+        elif self.arguments.config is not None:
+            pass
+        else:
+            pass
 
 
 if __name__ == "__main__":
