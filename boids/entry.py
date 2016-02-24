@@ -21,20 +21,43 @@ class ParseBoids(object):
         self.text_generate = parse_text['generate']
 
     def entry_point(self):
-        parser = ArgumentParser(description=self.text_main,
-                                epilog=self.text_epi)
-        parser.add_argument('--save', '-s', type=str, help=self.text_save)
-        parser.add_argument('--config', '-c',  type=str, help=self.text_config)
-        parser.add_argument('--generate', '-g', type=str, help=self.text_generate)
-        self.arguments = parser.parse_args()
+        self.parser = ArgumentParser(description=self.text_main,
+                                     epilog=self.text_epi)
+        self.parser.add_argument('--save', '-s', type=str,
+                                 help=self.text_save)
+        self.parser.add_argument('--config', '-c',  type=str,
+                                 help=self.text_config)
+        self.parser.add_argument('--generate', '-g', type=str,
+                                 help=self.text_generate)
+        self.arguments = self.parser.parse_args()
+        self._arg_check()
         self.process_config()
+
+    def _arg_check(self):
+        args = vars(self.arguments)
+        for arg in args:
+            if args[arg] is not None:
+                extensions = {'save': '.mp4',
+                              'config': '.yml',
+                              'generate': '.yml'}
+                actual_arg = args[arg].lower()
+                expect_ext = extensions[arg]
+                arg_len = len(actual_arg) > 4
+                arg_end = actual_arg.endswith(expect_ext)
+
+                if not (arg_len & arg_end):
+                    self.parser.error(arg.upper() + ' argument ' +
+                                      'should have extension ' +
+                                      expect_ext)
 
     def process_config(self):
         if self.arguments.generate is not None:
             self.generate_config()
+
         elif self.arguments.config is not None:
             self.open_config()
             self.process_boids()
+
         else:
             self.process_boids()
 
@@ -43,6 +66,7 @@ class ParseBoids(object):
             config_generate = open(self.arguments.generate, 'w')
             config_generate.write(yaml.dump(self.settings))
             config_generate.close()
+
         except IOError:
             raise IOError('Unable to write configuration file')
 
@@ -54,10 +78,13 @@ class ParseBoids(object):
             actual_keys = set(self.settings.keys())
             assert expected_keys.issubset(actual_keys)
             config_read.close()
+
         except AssertionError:
             raise KeyError('Key(s) missing form given configuration file')
+
         except AttributeError:
             raise IOError('Incorrectly formatted YAML file')
+
         except IOError:
             raise IOError('Unable to open given configuration file')
 
@@ -67,6 +94,7 @@ class ParseBoids(object):
         if self.arguments.save is not None:
             self.boid_anim.save(self.arguments.save,
                                 metadata={'title': 'Boids'})
+
         else:
             plt.show()
 
