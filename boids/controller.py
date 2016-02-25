@@ -1,9 +1,10 @@
 from builder import BuildBoids
 from viewer import ViewBoids
+from boid_exceptions import BoidExceptions
 from matplotlib import animation
 
 
-class ControlBoids(object):
+class ControlBoids(BoidExceptions):
     def __init__(self, settings):
         builder = BuildBoids()
         builder.set_location_ranges(**settings.pop('location_range'))
@@ -20,12 +21,8 @@ class ControlBoids(object):
 
         self.animator = animate_boid
 
+    @BoidExceptions._check_set_animation_settings
     def _set_animation_settings(self, frames, interval):
-        anim_settings_integer = [isinstance(frames, int),
-                                 isinstance(interval, int)]
-        if not all(anim_settings_integer):
-            raise TypeError('The animation settings frames and interval ' +
-                            'need to be integers')
         self.anim_frames = frames
         self.anim_interval = interval
 

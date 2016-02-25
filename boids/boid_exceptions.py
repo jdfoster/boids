@@ -103,3 +103,24 @@ class BoidExceptions(object):
             funct(self, *args, **kwargs)
 
         return _wrapped_funct
+
+    @classmethod
+    def _check_set_animation_settings(self, funct):
+        def _wrapped_funct(self, *args, **kwargs):
+            int_er_type = TypeError('The animation settings frames and interval ' +
+                            'need to be integers')
+            list_int = None
+
+            if len(args) == 2:
+                list_int = [arg for arg in args]
+
+            if len(kwargs) == 2:
+                list_int = [kwargs['frames'], kwargs['interval']]
+
+            if list_int is not None:
+                is_int = self._map_isinstance(list_int, int)
+                self._check_exception(is_int, int_er_type)
+
+            funct(self, *args, **kwargs)
+
+        return _wrapped_funct
