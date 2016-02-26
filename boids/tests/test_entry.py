@@ -73,3 +73,15 @@ def test_process_config():
             assert gen_config.called == gen_config_call
             assert open_config.called == open_config_call
             assert pro_boids.called == pro_boids_call
+
+
+def test_process_boids():
+    with patch('boids.entry.ControlBoids') as mock_controller, \
+         patch('boids.entry.plt.show') as mock_plt_show:
+        parseboids = ParseBoids()
+        parseboids.arguments = MagicMock()
+        parseboids.process_boids()
+        assert(mock_plt_show.called is not None)
+        parseboids.arguments.save = None
+        parseboids.process_boids()
+        assert(mock_plt_show.called)
