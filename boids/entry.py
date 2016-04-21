@@ -99,6 +99,10 @@ class ParseBoids(object):
             plt.show()
 
 
-if __name__ == "__main__":
+def entry():
     parseboids = ParseBoids()
     parseboids.entry_point()
+
+
+if __name__ == "__main__":
+    entry()

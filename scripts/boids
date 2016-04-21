@@ -1,4 +1,0 @@
-#!/usr/bin/env python2
-from boids.entry import ParseBoids
-parseboids = ParseBoids()
-parseboids.entry_point()
