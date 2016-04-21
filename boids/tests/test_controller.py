@@ -1,12 +1,12 @@
 from ..controller import ControlBoids
-from generate_fixtures import generate_example_settings
+from boids.tests.generate_fixtures import generate_example_settings
 import matplotlib
 from mock import patch
 
 
 def test_ControlBoids_init():
-    with patch('boids.controller.BuildBoids') as mock_build, \
-         patch('boids.controller.ViewBoids') as mock_view:
+    with patch('boids.controller.BuildBoids'), \
+         patch('boids.controller.ViewBoids'):
         test_data = generate_example_settings()
         control = ControlBoids(test_data)
         assert(control.boids.update_boids.call_count == 0)

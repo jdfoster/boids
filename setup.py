@@ -12,7 +12,7 @@ setup(
     test_suite='nose.collector',
     tests_require=['mock', 'nose', 'pyyaml'],
     install_requires=['argparse', 'matplotlib', 'numpy', 'pyyaml'],
-    entry_points={'console_scripts':['boids = boids.entry:entry']},
+    entry_points={'console_scripts': ['boids = boids.entry:entry']},
     author="Joshua D. Foster",
     author_email="joshua.foster@ucl.ac.uk",
     description=["Command line tool to generate an animation of a" +

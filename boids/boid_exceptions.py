@@ -3,7 +3,7 @@ class BoidExceptions(object):
         def type_check(item):
             return isinstance(item, dat_type)
 
-        bool_logic = map(type_check, container)
+        bool_logic = [type_check(item) for item in container]
         return all(bool_logic)
 
     def _check_exception(self, test_funct, er_type):
@@ -107,8 +107,8 @@ class BoidExceptions(object):
     @classmethod
     def _check_set_animation_settings(self, funct):
         def _wrapped_funct(self, *args, **kwargs):
-            int_er_type = TypeError('The animation settings frames and interval ' +
-                            'need to be integers')
+            int_er_type = TypeError('The animation settings frames and ' +
+                                    'interval need to be integers')
             list_int = None
 
             if len(args) == 2:

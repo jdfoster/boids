@@ -1,4 +1,4 @@
-from controller import ControlBoids
+from boids.controller import ControlBoids
 from argparse import ArgumentParser
 from matplotlib import pyplot as plt
 import os

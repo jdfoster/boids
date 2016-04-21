@@ -1,6 +1,6 @@
-from builder import BuildBoids
-from viewer import ViewBoids
-from boid_exceptions import BoidExceptions
+from boids.builder import BuildBoids
+from boids.viewer import ViewBoids
+from boids.boid_exceptions import BoidExceptions
 from matplotlib import animation
 
 

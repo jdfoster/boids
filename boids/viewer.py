@@ -1,4 +1,4 @@
-from boid_exceptions import BoidExceptions
+from boids.boid_exceptions import BoidExceptions
 from matplotlib import pyplot as plt
 
 

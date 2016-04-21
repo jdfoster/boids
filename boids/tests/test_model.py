@@ -1,9 +1,9 @@
 from ..builder import BuildBoids
 from ..model import Boid
-from generate_fixtures import generate_broken_boid_data, \
+from boids.tests.generate_fixtures import generate_broken_boid_data, \
     negative_fixture_check
-from nose.tools import assert_almost_equal, assert_equal, raises
-from numpy.testing import assert_array_equal, assert_array_less
+from nose.tools import assert_almost_equal
+from numpy.testing import assert_array_equal
 import os
 import yaml
 

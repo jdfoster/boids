@@ -1,11 +1,10 @@
 from ..builder import BuildBoids
 from ..model import Boids
-from generate_fixtures import generate_broken_flock_param, \
+from boids.tests.generate_fixtures import generate_broken_flock_param, \
     generate_broken_limits, negative_fixture_check
 from nose.tools import assert_equal, raises
 from numpy import linspace
-from numpy.testing import assert_array_equal, assert_array_less
-import yaml
+from numpy.testing import assert_array_less
 
 
 def test_generate_boids():

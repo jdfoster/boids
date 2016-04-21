@@ -30,10 +30,10 @@ def record_regression_fixture():
 def generate_image_fixture():
     with open(os.path.join(os.path.dirname(__file__), 'fixtures',
                            'fixture.yml'), 'r') as fixture_file, \
-    open(os.path.join(os.path.dirname(__file__), 'fixtures',
-                      'first.png'), 'w') as first_image, \
-    open(os.path.join(os.path.dirname(__file__), 'fixtures',
-                      'second.png'), 'w') as second_image:
+        open(os.path.join(os.path.dirname(__file__), 'fixtures',
+                          'first.png'), 'w') as first_image, \
+        open(os.path.join(os.path.dirname(__file__), 'fixtures',
+                          'second.png'), 'w') as second_image:
         builder = BuildBoids()
         builder.set_flock_parameters(50, 0.01, 100, 10000, 0.125)
         regression_data = yaml.load(fixture_file)

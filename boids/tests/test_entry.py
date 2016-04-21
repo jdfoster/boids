@@ -49,7 +49,6 @@ def test_arg_check():
         test_args = ['boids_prog'] + fixture
         with patch.object(sys, 'argv', test_args), assert_raises(SystemExit), \
              capture_sys_output():
-            print test_args
             parseboids = ParseBoids()
             parseboids.entry_point()
 
@@ -76,7 +75,7 @@ def test_process_config():
 
 
 def test_process_boids():
-    with patch('boids.entry.ControlBoids') as mock_controller, \
+    with patch('boids.entry.ControlBoids'),  \
          patch('boids.entry.plt.show') as mock_plt_show:
         parseboids = ParseBoids()
         parseboids.arguments = MagicMock()
