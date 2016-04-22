@@ -4,7 +4,7 @@ from boids.tests.generate_fixtures import generate_broken_limits, \
     negative_fixture_check
 from matplotlib import image as img
 from mock import patch, MagicMock
-from StringIO import StringIO
+from io import BytesIO
 import numpy as np
 import os
 import yaml
@@ -25,9 +25,9 @@ def test_ViewBoids():
 
 
 def compare_view_generated_plot(view_obj, test_image):
-    io_buffer = StringIO()
+    io_buffer = BytesIO()
     view_obj.figure.savefig(io_buffer)
-    actual_array = img.imread(StringIO(io_buffer.getvalue()))
+    actual_array = img.imread(BytesIO(io_buffer.getvalue()))
     test_array = img.imread(test_image)
     np.testing.assert_almost_equal(actual_array, test_array)
 

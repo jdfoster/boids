@@ -2,9 +2,12 @@ from ..entry import ParseBoids
 from contextlib import contextmanager
 from mock import patch, MagicMock
 from nose.tools import assert_raises
-from StringIO import StringIO
 import sys
 
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 def test_parseboids_init():
     parseboids = ParseBoids()
